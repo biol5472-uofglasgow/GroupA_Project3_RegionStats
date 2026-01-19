@@ -1,0 +1,6 @@
+##gff-version 3
+chr1	fixture	region	1	12	.	+	.	ID=reg1;Name=win1
+chr1	fixture	region	29	40	.	+	.	ID=reg2;Name=win2_with_N
+chr1	fixture	region	41	60	.	+	.	ID=reg3;Name=win3
+chr2	fixture	region	1	16	.	+	.	ID=reg4;Name=chr2_1
+chr2	fixture	region	33	48	.	+	.	ID=reg5;Name=chr2_2_with_N
