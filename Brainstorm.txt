@@ -1,0 +1,12 @@
+The first thing we need to do is understand the challenges:
+
+	1) Evaluate the input file types and formats
+	
+	2) Evaluate the "libraries"
+		a)For FASTA access - pyfaidx
+		b)For interval handling - pyranges or pybedtools
+
+
+
+
+ 
