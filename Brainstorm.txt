@@ -8,5 +8,28 @@ The first thing we need to do is understand the challenges:
 
 
 
+#---------------------------21.Jan
+The Project was broken down into phases :
+
+Phase 1 : Core Code - Dealine Friday
+
+
+	1) Initial Setup
+		a)Unit testing
+		b)pyproject.toml
+		c).gitignore
+		4)src ?
+	
+	2) Fasta Parsing 
+	3) Interval Handling
+	4) Argument Parsing
+	5)Output Format
+	6) Metrics
+
+
+
+
+
+
 
  
