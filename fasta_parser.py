@@ -17,6 +17,5 @@ def get_seq_record(fasta_file):
             
             #Returns ID and sequence for each record
             yield id, seq   
-for record in get_seq_record('ref.fasta'):
-    print(record)
+
 
