@@ -8,7 +8,9 @@ version = "0.1.0"
 description = "Group A Project 3 – Region statistics tool"
 readme = "README.md"
 requires-python = ">=3.9"
-authors = 
+authors = [
+    { name = "Group A", email = "alzaraim.de@gmail.com" }
+]
 
 dependencies = [
     "pyfaidx",
@@ -24,18 +26,3 @@ dev = [
     "ruff",
     "mypy"
 ]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-addopts = "-v"
-
-[tool.mypy]
-python_version = "3.9"
-ignore_missing_imports = true
-check_untyped_defs = true
-disallow_untyped_defs = false
-warn_unused_ignores = true
-warn_return_any = true
-warn_redundant_casts = true
-pretty = true
