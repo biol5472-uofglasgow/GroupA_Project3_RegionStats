@@ -1,6 +1,7 @@
-
+from regionstats.output_utils import write_bedgraph, bedgraph_to_bigwig
+from regionstats.interval_handler import compute_interval_metrics
+from regionstats.argument_parser import parse_args
 from typing import Callable, Dict
-
 """
     This function returns the length of the region isolated from the sequence 
 """
@@ -74,3 +75,42 @@ def gc_fraction(seq: str, mode: str = "include_n") -> float:
     # Default: includes the Ns in the calculation of length 
     gc_fraction=gc_count / total_len
     return gc_fraction
+    
+    # pipeline integration
+def run_pipeline(args):
+    """
+    Main RegionStats pipeline
+    """
+
+    # Compute interval metrics
+    interval_metrics = compute_interval_metrics(
+        fasta_path=args.fasta,
+        interval_path=args.intervals,
+        gc_mode=args.gc_mode)
+
+    # bedGraph output
+    if args.bedgraph:
+        bedgraph_path = args.output_prefix + ".bedGraph"
+        write_bedgraph(interval_metrics, bedgraph_path)
+
+    # bigWig output
+    if args.bigwig:
+        if not args.chrom_sizes:
+            raise ValueError("--chrom-sizes must be provided when using --bigwig")
+
+        if not args.bedgraph:
+            raise ValueError("--bigwig requires bedGraph output to be enabled")
+
+        bedgraph_to_bigwig(
+            args.output_prefix + ".bedGraph",
+            args.chrom_sizes,
+            args.output_prefix + ".bigWig")
+
+
+def main():
+    args = parse_args()
+    run_pipeline(args)
+
+
+if __name__ == "__main__":
+    main()
