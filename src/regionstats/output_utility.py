@@ -1,3 +1,5 @@
+import pyBigWig
+
 # bedgraph
 def write_bedgraph(interval_metrics, output_path):
     """
@@ -21,7 +23,6 @@ def write_bedgraph(interval_metrics, output_path):
             out.write(f"{chrom}\t{start}\t{end}\t{gc:.4f}\n")
 
 # bigwig
-import pyBigWig
 def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
     """
     Convert a bedGraph file into a BigWig file for genome browser use.
