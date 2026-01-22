@@ -8,7 +8,7 @@ def sequence_length(seq: str) -> int:
     
     seq_length= len(seq) 
     return seq_length
-
+#Checks for the proper running of the sequence_length function 
 assert sequence_length("ATGC")==4
 assert sequence_length("atgc")==4
 assert sequence_length("atg")==3
@@ -28,7 +28,8 @@ def n_fraction(seq: str) -> float:
     n_fraction:float=n_count / len(seq_upper) #counts the fraction of N in the isolated region 
 
     return n_fraction
-
+    
+#Checks for the proper running of the n_fraction function 
 assert n_fraction("ATGC")==0
 assert n_fraction("atgc")==0
 assert n_fraction("ATNN")==0.5
@@ -74,3 +75,11 @@ def gc_fraction(seq: str, mode: str = "include_n") -> float:
     # Default: includes the Ns in the calculation of length 
     gc_fraction=gc_count / total_len
     return gc_fraction
+    
+#Checks for the proper running of the gc_fraction function     
+assert gc_fraction("ATGC")==0.5
+assert gc_fraction("atgc")==0.5
+assert gc_fraction("GGGG")==1
+assert gc_fraction("CCCC")==1
+assert gc_fraction("NNNN")==0
+assert gc_fraction("ATGCN")==0.4
