@@ -1,4 +1,4 @@
-#bedgraph
+# bedgraph
 def write_bedgraph(interval_metrics, output_path):
     """
     Write GC fraction per interval as a bedGraph file.
@@ -20,7 +20,7 @@ def write_bedgraph(interval_metrics, output_path):
 
             out.write(f"{chrom}\t{start}\t{end}\t{gc:.4f}\n")
 
-#bigwig
+# bigwig
 import pyBigWig
 def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
     """
