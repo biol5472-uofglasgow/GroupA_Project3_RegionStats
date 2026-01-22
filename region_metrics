@@ -9,6 +9,10 @@ def sequence_length(seq: str) -> int:
     seq_length= len(seq) 
     return seq_length
 
+assert sequence_length("ATGC")==4
+assert sequence_length("atgc")==4
+assert sequence_length("atg")==3
+
 """
     Return the fraction of ambiguous base calls in the region isolated from the sequence 
 
@@ -24,6 +28,13 @@ def n_fraction(seq: str) -> float:
     n_fraction:float=n_count / len(seq_upper) #counts the fraction of N in the isolated region 
 
     return n_fraction
+
+assert n_fraction("ATGC")==0
+assert n_fraction("atgc")==0
+assert n_fraction("ATNN")==0.5
+assert n_fraction("NNNN")==1
+assert n_fraction("ATng")==0.25
+assert n_fraction("nnnn")==1
 
 """
     Returns the GC fraction of the isolated region 
