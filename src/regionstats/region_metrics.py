@@ -1,4 +1,4 @@
-from regionstats.output_utils import write_bedgraph, bedgraph_to_bigwig
+from regionstats.output_utility import write_bedgraph, bedgraph_to_bigwig
 from regionstats.interval_handler import compute_interval_metrics
 from regionstats.argument_parser import parse_args
 from typing import Callable, Dict
