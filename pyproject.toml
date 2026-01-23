@@ -9,15 +9,15 @@ description = "Group A Project 3 – Region statistics tool"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
-    { name = "Group A", email = "alzaraim.de@gmail.com" }
+    { name = "Group A" }
 ]
 
 dependencies = [
     "pyfaidx",
     "pyranges",
-    "pandas"
+    "pandas",
+    "biopython"
 ]
-
 
 [project.optional-dependencies]
 dev = [
