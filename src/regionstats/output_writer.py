@@ -17,7 +17,7 @@ HEADERS: List[str] = [
 
 """
 
-def ouput_tsv(
+def write_tsv(
     records: List[Dict[str, Any]],
     output_path: str
 ) -> None:
@@ -50,7 +50,7 @@ from pathlib import Path
     Write the run metadata to a JSON file.
 """
 
-def write_json(
+def write_run_json(
     fasta_path: str,
     intervals: str,
     interval_format: str,
