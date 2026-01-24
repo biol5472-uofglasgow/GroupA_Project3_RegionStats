@@ -16,7 +16,7 @@ dependencies = [
     "pyfaidx",
     "pyranges",
     "pandas",
-    "biopython"
+    "biopython",
     "pyBigWig"
 ]
 
