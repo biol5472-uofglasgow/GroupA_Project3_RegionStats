@@ -93,6 +93,10 @@ def main() -> int:
         
         write_tsv(metrics, tsv_path)
         write_bedgraph(metrics, bedgraph_path)
+        if args.bigwig:
+            bigwig_path = f"{args.output_prefix}_region_metrics.bw"
+            bedgraph_to_bigwig(bedgraph_path, args.chrom_sizes, bigwig_path)
+            print(f"BigWig file created: {bigwig_path}")
         write_run_json(
             fasta_path=args.fasta,
             intervals=args.intervals,
