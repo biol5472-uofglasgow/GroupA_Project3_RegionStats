@@ -95,7 +95,7 @@ def main() -> int:
         write_bedgraph(metrics, bedgraph_path)
         write_run_json(
             fasta_path=args.fasta,
-            intervals_path=args.intervals,
+            intervals=args.intervals,
             interval_format=args.interval_format,
             gc_mode=args.gc_mode,
             output_prefix=args.output_prefix,
