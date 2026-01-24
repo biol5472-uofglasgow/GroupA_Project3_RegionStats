@@ -17,6 +17,7 @@ dependencies = [
     "pyranges",
     "pandas",
     "biopython"
+    "pyBigWig"
 ]
 
 [project.optional-dependencies]
