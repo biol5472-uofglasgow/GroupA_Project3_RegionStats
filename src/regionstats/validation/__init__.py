@@ -1,7 +1,7 @@
-from .file_checks import ValidationError, validate_file_path
-from .fasta import validate_fasta
-from .bed import validate_bed
-from .gff3 import validate_gff3
+from .file_validation import ValidationError, validate_file_path
+from .fasta_validation import validate_fasta
+from .bed_validation import validate_bed
+from .gff3_validation import validate_gff3
 
 __all__ = [
     "ValidationError",
