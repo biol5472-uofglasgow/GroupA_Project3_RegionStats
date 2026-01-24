@@ -17,7 +17,7 @@ HEADERS: List[str] = [
 
 """
 
-def ouput_tsv(
+def write_tsv(
     records: List[Dict[str, Any]],
     output_path: str
 ) -> None:
@@ -41,3 +41,46 @@ def ouput_tsv(
                 f"{record['n_fraction']:.6f}",
             ]
             out.write("\t".join(row) + "\n") 
+
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+"""
+    Write the run metadata to a JSON file.
+"""
+
+def write_run_json(
+    fasta_path: str,
+    intervals: str,
+    interval_format: str,
+    gc_mode: str,
+    output_prefix: str,
+    num_intervals: int,
+    output_path: str
+) -> None: 
+   
+    metadata = {
+        "tool": "regionstats",
+        "version": "0.1.0",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "inputs": {
+            "fasta": str(Path(fasta_path).resolve()),
+            "intervals": str(Path(intervals).resolve()),
+            "interval_format": interval_format,
+        },
+        "parameters": {
+            "gc_mode": gc_mode,
+        },
+        "outputs": {
+            "output_tsv": f"{output_prefix}_output_tsv.tsv",
+            "run_json": f"{output_prefix}_run.json",
+            "bedgraph": f"{output_prefix}_region_metrics.bedGraph",
+        },
+        "summary": {
+            "num_intervals": num_intervals,
+        },
+    }
+    
+    with open(output_path, "w") as out:
+        json.dump(metadata, out, indent=2)
