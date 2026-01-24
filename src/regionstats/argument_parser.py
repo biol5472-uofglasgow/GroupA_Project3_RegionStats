@@ -23,9 +23,26 @@ def build_parser() -> argparse.Namespace:
     #Allows the user to choose between two options for the method to calculate the GC content 
     parser.add_argument("--gc-mode",choices=["include_n", "exclude_n"],default="include_n",help=("GC calculation modes: "
             "'include_n' counts the Ns in the denominator; "
-            "'exclude_n' ignores the Ns in the denominator"
-        )
-    )
+            "'exclude_n' ignores the Ns in the denominator"))
 
-    return parser.parse_args()
+    # Enables bedGraph output
+    parser.add_argument( "--bedgraph", action="store_true", help="Write bedGraph output")
+
+    # Enables BigWig output
+    parser.add_argument( "--bigwig", action="store_true", help="Convert bedGraph to BigWig")
+
+    # Chromosome sizes file (required for BigWig)
+    parser.add_argument( "--chrom-sizes", help="Chromosome sizes file (required for BigWig output)")
+
+    args = parser.parse_args()
+
+    # Logical validation
+    if args.bigwig:
+        if not args.chrom_sizes:
+            parser.error("--bigwig requires --chrom-sizes")
+        if not args.bedgraph:
+            parser.error("--bigwig requires --bedgraph")
+
+    return args
+
 
