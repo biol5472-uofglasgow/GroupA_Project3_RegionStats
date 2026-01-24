@@ -1,6 +1,7 @@
 import pyBigWig
+from pathlib import Path
 
-# bedgraph
+
 def write_bedgraph(interval_metrics, output_path):
     """
     Write GC fraction per interval as a bedGraph file.
@@ -22,11 +23,19 @@ def write_bedgraph(interval_metrics, output_path):
 
             out.write(f"{chrom}\t{start}\t{end}\t{gc:.4f}\n")
 
-# bigwig
+
 def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
     """
     Convert a bedGraph file into a BigWig file for genome browser use.
     """
+    bedgraph_path = Path(bedgraph_path)
+    chrom_sizes_path = Path(chrom_sizes_path)
+
+    if not bedgraph_path.exists():
+        raise FileNotFoundError(f"bedGraph not found: {bedgraph_path}")
+
+    if not chrom_sizes_path.exists():
+        raise FileNotFoundError(f"Chrom sizes file not found: {chrom_sizes_path}")
 
     chrom_sizes = []
     with open(chrom_sizes_path) as f:
@@ -34,7 +43,7 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
             chrom, size = line.strip().split()
             chrom_sizes.append((chrom, int(size)))
 
-    bw = pyBigWig.open(bigwig_path, "w")
+    bw = pyBigWig.open(str(bigwig_path), "w")
     bw.addHeader(chrom_sizes)
 
     with open(bedgraph_path) as bg:
@@ -49,6 +58,4 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
                 ends=int(end),
                 values=float(value)
             )
-
     bw.close()
-
