@@ -1,5 +1,9 @@
-import pyBigWig
 from pathlib import Path
+try:
+    import pyBigWig
+except ImportError:
+    pyBigWig = None
+
 
 #bedgraph
 def write_bedgraph(interval_metrics, output_path):
@@ -28,6 +32,9 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
     """
     Convert a bedGraph file into a BigWig file for genome browser use.
     """
+    if pyBigWig is None:
+        raise ImportError("pyBigWig is required for BigWig output")
+        
     bedgraph_path = Path(bedgraph_path)
     chrom_sizes_path = Path(chrom_sizes_path)
 
