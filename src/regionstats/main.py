@@ -11,9 +11,9 @@ from .argument_parser import build_parser
 from .fetch_sequence import open_fasta, fetch_sequence
 from .interval_handler import load_intervals
 from .region_metrics import sequence_length, n_fraction, gc_fraction
-from .bedGraph_output import write_bedgraph
 from .output_writer import write_tsv, write_run_json
 from .validation import validate_fasta, validate_bed, validate_gff3
+from .bedgraph_bigwig_output import write_bedgraph, bedgraph_to_bigwig
 
 
 def main() -> int:
