@@ -26,23 +26,16 @@ def build_parser() -> argparse.Namespace:
             "'exclude_n' ignores the Ns in the denominator"))
 
     # Enables bedGraph output
-    parser.add_argument( "--bedgraph", action="store_true", help="Write bedGraph output")
+    parser.add_argument("--bedgraph", action="store_true", help="Write bedGraph output")
 
     # Enables BigWig output
-    parser.add_argument( "--bigwig", action="store_true", help="Convert bedGraph to BigWig")
-
-    # Chromosome sizes file (required for BigWig)
-    parser.add_argument( "--chrom-sizes", help="Chromosome sizes file (required for BigWig output)")
+    parser.add_argument( "--bigwig", action="store_true", help="Generate BigWig output (chrom sizes inferred from FASTA)")
 
     args = parser.parse_args()
 
     # Logical validation
     if args.bigwig:
-        if not args.chrom_sizes:
-            parser.error("--bigwig requires --chrom-sizes")
         if not args.bedgraph:
             parser.error("--bigwig requires --bedgraph")
 
     return args
-
-
