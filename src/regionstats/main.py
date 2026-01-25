@@ -13,8 +13,8 @@ from .interval_handler import load_intervals
 from .region_metrics import sequence_length, n_fraction, gc_fraction
 from .output_writer import write_tsv, write_run_json
 from .validation import validate_fasta, validate_bed, validate_gff3
+from .chrom_sizes import write_chrom_sizes_from_fasta
 from .bedgraph_bigwig_output import write_bedgraph, bedgraph_to_bigwig
-
 
 def main() -> int:
     """
