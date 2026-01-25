@@ -13,8 +13,8 @@ from .interval_handler import load_intervals
 from .region_metrics import sequence_length, n_fraction, gc_fraction
 from .output_writer import write_tsv, write_run_json
 from .validation import validate_fasta, validate_bed, validate_gff3
+from .chrom_sizes import write_chrom_sizes_from_fasta
 from .bedgraph_bigwig_output import write_bedgraph, bedgraph_to_bigwig
-
 
 def main() -> int:
     """
@@ -93,6 +93,15 @@ def main() -> int:
         
         write_tsv(metrics, tsv_path)
         write_bedgraph(metrics, bedgraph_path)
+        if args.bigwig:
+            chrom_sizes_path = f"{args.output_prefix}.chrom.sizes"
+            write_chrom_sizes_from_fasta(fasta, chrom_sizes_path)
+
+            bigwig_path = f"{args.output_prefix}_region_metrics.bigWig"
+            bedgraph_to_bigwig(
+                bedgraph_path,
+                chrom_sizes_path,
+                bigwig_path)
         write_run_json(
             fasta_path=args.fasta,
             intervals_path=args.intervals,

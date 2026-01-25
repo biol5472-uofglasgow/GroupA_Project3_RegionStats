@@ -14,7 +14,7 @@ def build_parser() -> argparse.Namespace:
     # Defines the parser for the BED/GFF file 
     parser.add_argument("--intervals",required=True,help="Input the Files for supplying the genomic intervals (BED or GFF3)")
 
-    # Defines the parser for allowing the user to select thr type of file included in the script
+    # Defines the parser for allowing the user to select the type of file included in the script
     parser.add_argument("--interval-format",required=True,choices=["bed", "gff3"],help="Input the Format of the intervals file")
 
     #Allows the user to input the prefix for the output files 
@@ -26,23 +26,15 @@ def build_parser() -> argparse.Namespace:
             "'exclude_n' ignores the Ns in the denominator"))
 
     # Enables bedGraph output
-    parser.add_argument( "--bedgraph", action="store_true", help="Write bedGraph output")
+    parser.add_argument("--bedgraph", action="store_true", help="Write bedGraph output")
 
     # Enables BigWig output
-    parser.add_argument( "--bigwig", action="store_true", help="Convert bedGraph to BigWig")
-
-    # Chromosome sizes file (required for BigWig)
-    parser.add_argument( "--chrom-sizes", help="Chromosome sizes file (required for BigWig output)")
+    parser.add_argument( "--bigwig", action="store_true", help="Generate BigWig output (chrom sizes inferred from FASTA)")
 
     args = parser.parse_args()
 
     # Logical validation
     if args.bigwig:
-        if not args.chrom_sizes:
-            parser.error("--bigwig requires --chrom-sizes")
         if not args.bedgraph:
             parser.error("--bigwig requires --bedgraph")
-
     return args
-
-
