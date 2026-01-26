@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Mapping 
 
-def write_chrom_sizes_from_fasta(fasta, output_path):
+def write_chrom_sizes_from_fasta(fasta:Mapping[str,str], output_path:Path)-> None: 
     """
     Generate chromosome sizes file from an opened FASTA object.
     """
