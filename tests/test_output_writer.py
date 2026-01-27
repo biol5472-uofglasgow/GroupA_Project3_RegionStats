@@ -4,11 +4,9 @@ import csv
 from pathlib import Path
 from regionstats.output_writer import write_tsv, write_run_json
 
-class TestOutputWriter
-
-@pytest.fixture
-
-def generate_mock_records(self):
+class TestOutputWriter:
+    @pytest.fixture
+    def generate_mock_records(self):
         # Provides a list of mock result for TSV testing
         return [
             {
@@ -22,11 +20,11 @@ def generate_mock_records(self):
                 "gc_fraction": 0.456789123, "n_fraction": 0.1
             }
         ]
-def test_write_tsv_success(self, tmp_path, mock_records):
+    def test_write_tsv_success(self, tmp_path, generate_mock_records):
         #Verifies whether TSV is written correctly with headers and formatting
 
         output_file = tmp_path / "test_output.tsv"
-        write_tsv(mock_records, str(output_file))
+        write_tsv(generate_mock_records, str(output_file))
         content = output_file.read_text().splitlines()
 
         #Checks the header of the file 
@@ -37,7 +35,7 @@ def test_write_tsv_success(self, tmp_path, mock_records):
         #We might need some more tests!
 
 
-def test_write_run_json_structure(self, tmp_path):
+    def test_write_run_json_structure(self, tmp_path):
     #Verifies if the JSON metadata contains all required keys and resolved path
        
         json_out = tmp_path / "run_info.json"
