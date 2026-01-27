@@ -1,6 +1,5 @@
-
 """
-    This function returns the length of the region isolated from the sequence
+This function returns the length of the region isolated from the sequence
 """
 
 
