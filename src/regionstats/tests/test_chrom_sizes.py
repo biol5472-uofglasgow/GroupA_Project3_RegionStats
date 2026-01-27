@@ -18,5 +18,4 @@ def test_chrom_sizes():
     assert "chr1\t4" in text
     assert "chr2\t6" in text
 
-    Path(fasta.name).unlink()
     Path(out.name).unlink()
