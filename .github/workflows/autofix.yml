@@ -27,7 +27,8 @@ jobs:
     
     - name: Install dependencies
       run: |
-        uv pip install --system black ruff
+        uv tool install black
+        uv tool install ruff
     
     - name: Run Black formatter
       run: |
