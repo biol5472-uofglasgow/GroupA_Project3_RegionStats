@@ -1,17 +1,18 @@
 from pathlib import Path
 
 class ValidationError(Exception):
-    """Raised when input validation fails."""
     pass
 
-def validate_file_path(path: str, description: str):
-    p = Path(path)
 
-    if not p.exists():
+def validate_file_readable(path: str, description: str):
+    """
+    Attempt to open file to ensure it is readable.
+    Avoids separate existence checks.
+    """
+    try:
+        with open(path, "r") as f:
+            f.readline()
+    except FileNotFoundError:
         raise ValidationError(f"{description} file not found: {path}")
-
-    if not p.is_file():
-        raise ValidationError(f"{description} is not a file: {path}")
-
-    if p.stat().st_size == 0:
-        raise ValidationError(f"{description} file is empty: {path}")
+    except PermissionError:
+        raise ValidationError(f"{description} file not readable: {path}")
