@@ -32,16 +32,16 @@ jobs:
     
     - name: Check formatting with Black
       run: |
-        black --check src/
+        uv run black --check src/
     
     - name: Lint with Ruff
       run: |
-        ruff check src/
+        uv run ruff check src/
     
-    - name: Run tests (if any exist)
+    - name: Run tests 
       run: |
         if [ -n "$(find tests -name 'test_*.py' 2>/dev/null)" ]; then
-          pytest tests/ -v
+          uv run pytest tests/ -v
         else
           echo "No tests found yet - skipping"
         fi
