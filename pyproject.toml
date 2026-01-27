@@ -16,11 +16,11 @@ dependencies = [
     "pyfaidx",
     "pyranges",
     "pandas",
-    "biopython",
-    "pyBigWig"
+    "biopython"
 ]
 
 [project.optional-dependencies]
+bigwig = ["pyBigWig"]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
