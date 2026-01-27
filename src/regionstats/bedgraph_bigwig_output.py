@@ -1,9 +1,9 @@
 from pathlib import Path
 
 try:
-    import pyBigWig
+    import pybigwig
 except ImportError:
-    pyBigWig = None
+    pybigwig = None
 
 
 # bedgraph
@@ -34,7 +34,7 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
     """
     Convert a bedGraph file into a BigWig file for genome browser use.
     """
-    if pyBigWig is None:
+    if pybigwig is None:
         raise ImportError("pyBigWig is required for BigWig output")
 
     bedgraph_path = Path(bedgraph_path)
@@ -52,7 +52,7 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
             chrom, size = line.strip().split()
             chrom_sizes.append((chrom, int(size)))
 
-    bw = pyBigWig.open(str(bigwig_path), "w")
+    bw = pybigwig.open(str(bigwig_path), "w")
     bw.addHeader(chrom_sizes)
 
     with open(bedgraph_path) as bg:
