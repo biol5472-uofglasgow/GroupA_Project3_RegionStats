@@ -1,5 +1,5 @@
 import pytest
-from region_metrics import sequence_length, n_fraction, gc_fraction
+from regionstats.region_metrics import sequence_length, n_fraction, gc_fraction
 
 #Test for the function sequence_length
 def test_sequence_length_original():
