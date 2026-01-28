@@ -25,13 +25,13 @@ RegionStats extracts sequences from specified genomic regions and calculates sta
 
 ## 🔧 Installation
 
-### Option 1: pip (Recommended)
+### Option 1: pip (Not Yet Implemented)
 
 ```bash
 pip install regionstats
 ```
 
-### Option 2: Docker
+### Option 2: Docker (Not Yet Implemented)
 
 ```bash
 # Pull the image
@@ -188,6 +188,10 @@ bedGraph track file for genome browser visualization showing GC content across i
 ### `{prefix}_region_metrics.bigWig` (optional)
 BigWig binary format for efficient genome browser display.
 
+
+### `HTML` (Under Development)
+
+
 ---
 
 ## 💡 Examples
@@ -220,7 +224,6 @@ regionstats \
   --gc-mode exclude_n
 ```
 
-Useful for draft genomes with many gaps (Ns).
 
 ---
 
@@ -277,34 +280,6 @@ pytest tests/ --cov=regionstats --cov-report=html
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! RegionStats is an active development project.
-
-### How to Contribute
-
-1. **Fork the repository**
-2. **Create a feature branch:** `git checkout -b feature/amazing-feature`
-3. **Make your changes** and add tests
-4. **Run tests:** `pytest tests/`
-5. **Commit:** `git commit -m 'Add amazing feature'`
-6. **Push:** `git push origin feature/amazing-feature`
-7. **Open a Pull Request**
-
-### Reporting Issues
-
-Found a bug or have a feature request? [Open an issue](https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats/issues) on GitHub!
-
-**Please include:**
-- RegionStats version (`regionstats --version`)
-- Python version
-- Operating system
-- Error messages and steps to reproduce
-
----
-
-## 📚 Project Information
-
 ### Development Status
 
 **Version:** 0.1.0  
@@ -323,29 +298,6 @@ This tool was developed as part of BIOL5472 at the University of Glasgow. While 
 
 ---
 
-## 📄 Citation
-
-If you use RegionStats in your research, please cite:
-
-```
-Alsuwaidi, M., Chew, S., Qazi, F.H., & Venkatachala, L. (2026).
-RegionStats: A tool for computing sequence composition metrics across genomic intervals.
-GitHub repository: https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats
-```
-
-BibTeX:
-```bibtex
-@software{regionstats2026,
-  author = {Alsuwaidi, Mohammad and Chew, Sasha and Qazi, Faizul Hasan and Venkatachala, Lohith},
-  title = {RegionStats: A tool for computing sequence composition metrics across genomic intervals},
-  year = {2026},
-  url = {https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats},
-  version = {0.1.0}
-}
-```
-
----
-
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -360,20 +312,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🔗 Links
-
-- **Repository:** https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats
-- **Issues:** https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats/issues
-- **CI/CD Status:** https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats/actions
-
----
-
 ## 🙏 Acknowledgments
 
 - University of Glasgow BIOL5472 course
 - Contributors and maintainers of dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`, `pyBigWig`
 - The Python bioinformatics community
-
----
-
-**Made with ❤️ at the University of Glasgow**
