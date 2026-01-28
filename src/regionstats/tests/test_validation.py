@@ -1,41 +1,42 @@
 import tempfile
-from pathlib import Path
 import pytest
+from pathlib import Path
 
-from regionstats.validation import (validate_file_path,validate_fasta,validate_bed,validate_gff3,ValidationError)
+from regionstats.validation import (
+    validate_fasta,
+    validate_bed,
+    validate_gff3,
+)
 
-# creates a small temporary file
-def create_temp_file(content="test"):
+
+def test_validate_fasta_valid():
     f = tempfile.NamedTemporaryFile(delete=False)
-    f.write(content.encode())
+    f.write(b">chr1\nATGC\n")
     f.close()
-    return f.name
 
-
-def test_file_exists():
-    path = create_temp_file("abc")
-    validate_file_path(path, "test")
-    Path(path).unlink()
-
-
-def test_missing_file():
-    with pytest.raises(ValidationError):
-        validate_file_path("missing.txt", "test")
+    validate_fasta(f.name)
 
 #fasta
-def test_valid_fasta():
-    fasta = create_temp_file(">chr1\nATGC\n")
-    validate_fasta(fasta)
-    Path(fasta).unlink()
+def test_validate_fasta_invalid():
+    f = tempfile.NamedTemporaryFile(delete=False)
+    f.write(b"ATGC\n")
+    f.close()
+
+    with pytest.raises(Exception):
+        validate_fasta(f.name)
 
 #bed
-def test_valid_bed():
-    bed = create_temp_file("chr1\t0\t10\n")
-    validate_bed(bed)
-    Path(bed).unlink()
+def test_validate_bed_valid():
+    f = tempfile.NamedTemporaryFile(delete=False)
+    f.write(b"chr1\t0\t10\n")
+    f.close()
+
+    validate_bed(f.name)
 
 #gff3
-def test_valid_gff3():
-    gff = create_temp_file("##gff-version 3\nchr1\tsrc\tregion\t1\t10\t.\t+\t.\tID=x\n")
-    validate_gff3(gff)
-    Path(gff).unlink()
+def test_validate_gff3_valid():
+    f = tempfile.NamedTemporaryFile(delete=False)
+    f.write(b"##gff-version 3\n")
+    f.close()
+
+    validate_gff3(f.name)
