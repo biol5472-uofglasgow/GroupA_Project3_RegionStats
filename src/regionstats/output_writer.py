@@ -1,4 +1,7 @@
 from typing import Any, Dict, List
+import json
+from datetime import datetime, timezone
+from pathlib import Path
 
 HEADERS: List[str] = [
     "seqid",
@@ -40,10 +43,6 @@ def write_tsv(records: List[Dict[str, Any]], output_path: str) -> None:
             ]
             out.write("\t".join(row) + "\n")
 
-
-import json
-from datetime import datetime, timezone
-from pathlib import Path
 
 """
     Write the run metadata to a JSON file.
