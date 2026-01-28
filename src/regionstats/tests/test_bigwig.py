@@ -1,4 +1,5 @@
 import pytest
+
 from regionstats.bedgraph_bigwig_output import bedgraph_to_bigwig
 
 

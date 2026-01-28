@@ -1,10 +1,10 @@
 import tempfile
+
 import pytest
-from pathlib import Path
 
 from regionstats.validation import (
-    validate_fasta,
     validate_bed,
+    validate_fasta,
     validate_gff3,
 )
 
@@ -16,7 +16,8 @@ def test_validate_fasta_valid():
 
     validate_fasta(f.name)
 
-#fasta
+
+# fasta
 def test_validate_fasta_invalid():
     f = tempfile.NamedTemporaryFile(delete=False)
     f.write(b"ATGC\n")
@@ -25,7 +26,8 @@ def test_validate_fasta_invalid():
     with pytest.raises(Exception):
         validate_fasta(f.name)
 
-#bed
+
+# bed
 def test_validate_bed_valid():
     f = tempfile.NamedTemporaryFile(delete=False)
     f.write(b"chr1\t0\t10\n")
@@ -33,7 +35,8 @@ def test_validate_bed_valid():
 
     validate_bed(f.name)
 
-#gff3
+
+# gff3
 def test_validate_gff3_valid():
     f = tempfile.NamedTemporaryFile(delete=False)
     f.write(b"##gff-version 3\n")

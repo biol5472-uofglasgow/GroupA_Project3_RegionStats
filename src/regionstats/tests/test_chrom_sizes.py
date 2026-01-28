@@ -1,5 +1,6 @@
 import tempfile
 from pathlib import Path
+
 from regionstats.chrom_sizes import write_chrom_sizes_from_fasta
 
 

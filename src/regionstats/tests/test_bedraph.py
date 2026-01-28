@@ -5,9 +5,7 @@ from regionstats.bedgraph_bigwig_output import write_bedgraph
 
 
 def test_write_bedgraph_creates_file():
-    metrics = [
-        {"seqid": "chr1", "start": 0, "end": 10, "gc_fraction": 0.5}
-    ]
+    metrics = [{"seqid": "chr1", "start": 0, "end": 10, "gc_fraction": 0.5}]
 
     out = tempfile.NamedTemporaryFile(delete=False)
     out.close()
