@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **A fast command-line tool for computing sequence composition metrics across genomic intervals.**
+**This a placeholder README and requires edit and review.**
 
 RegionStats extracts sequences from specified genomic regions and calculates statistics like GC content, N-fraction, and sequence length. Designed for bioinformatics workflows requiring quality control and compositional analysis of genomic intervals.
 
