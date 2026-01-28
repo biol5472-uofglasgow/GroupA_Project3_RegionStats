@@ -1,7 +1,7 @@
 import argparse
 
 
-def build_parser() -> argparse.Namespace:
+def build_parser(args_list=None) -> argparse.Namespace:
     """
     This function takes in the necessary arguments from the user
     Using the command line interface
@@ -60,10 +60,11 @@ def build_parser() -> argparse.Namespace:
         help="Generate BigWig output (chrom sizes inferred from FASTA)",
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args(args_list)
 
     # Logical validation
     if args.bigwig:
         if not args.bedgraph:
             parser.error("--bigwig requires --bedgraph")
     return args
+
