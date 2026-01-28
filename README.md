@@ -5,10 +5,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **A fast command-line tool for computing sequence composition metrics across genomic intervals.**
-**This a placeholder README and requires edit and review.**
 
 RegionStats extracts sequences from specified genomic regions and calculates statistics like GC content, N-fraction, and sequence length. Designed for bioinformatics workflows requiring quality control and compositional analysis of genomic intervals.
-dd
+
 ---
 
 ## ✨ Features
@@ -26,20 +25,27 @@ dd
 
 ## 🔧 Installation
 
-### Option 1: pip (Not Yet Implemented)
+### Option 1: pip (Coming Soon)
 
 ```bash
 pip install regionstats
 ```
 
-### Option 2: Docker (Not Yet Implemented)
+*Note: PyPI package will be available in a future release.*
+
+### Option 2: Docker (Recommended for Reproducibility)
 
 ```bash
-# Pull the image
-docker pull ghcr.io/biol5472-uofglasgow/regionstats:latest
-
-# Or build locally
+# Build locally
 docker build -t regionstats:latest .
+
+# Run with your data
+docker run -v $(pwd):/data regionstats:latest \
+  --fasta /data/reference.fasta \
+  --intervals /data/regions.bed \
+  --interval-format bed \
+  --output-prefix /data/results \
+  --gc-mode include_n
 ```
 
 ### Option 3: From Source
@@ -49,18 +55,18 @@ docker build -t regionstats:latest .
 git clone https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats.git
 cd GroupA_Project3_RegionStats
 
-# Install with uv (fast)
+# Install with uv 
 curl -LsSf https://astral.sh/uv/install.sh | sh
-uv pip install -e ".[dev]"
-
-# Or with pip
-pip install -e ".[dev]"
+uv venv
+source .venv/bin/activate 
+uv pip install .
 ```
 
 ### Requirements
 
 - Python ≥ 3.9
-- Dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`, `pyBigWig`
+- Dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`
+- Optional: `pyBigWig` (for BigWig output)
 
 ---
 
@@ -189,9 +195,8 @@ bedGraph track file for genome browser visualization showing GC content across i
 ### `{prefix}_region_metrics.bigWig` (optional)
 BigWig binary format for efficient genome browser display.
 
-
-### `HTML` (Under Development)
-
+### HTML Output (Under Development)
+Interactive HTML visualization coming in future release.
 
 ---
 
@@ -225,6 +230,7 @@ regionstats \
   --gc-mode exclude_n
 ```
 
+Useful for draft genomes with many gaps (Ns).
 
 ---
 
@@ -281,6 +287,20 @@ pytest tests/ --cov=regionstats --cov-report=html
 
 ---
 
+### Reporting Issues
+
+Found a bug or have a feature request? [Open an issue](https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats/issues) on GitHub!
+
+**Please include:**
+- RegionStats version (`regionstats --version`)
+- Python version
+- Operating system
+- Error messages and steps to reproduce
+
+---
+
+## 📚 Project Information
+
 ### Development Status
 
 **Version:** 0.1.0  
@@ -299,17 +319,10 @@ This tool was developed as part of BIOL5472 at the University of Glasgow. While 
 
 ---
 
+
 ## 📜 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-### MIT License Summary
-
-- ✅ **Commercial use** allowed
-- ✅ **Modification** allowed
-- ✅ **Distribution** allowed
-- ✅ **Private use** allowed
-- ⚠️ **Liability** and **warranty** not provided
 
 ---
 
@@ -318,3 +331,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - University of Glasgow BIOL5472 course
 - Contributors and maintainers of dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`, `pyBigWig`
 - The Python bioinformatics community
+
+---
