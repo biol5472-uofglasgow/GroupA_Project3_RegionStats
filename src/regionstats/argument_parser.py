@@ -25,7 +25,8 @@ def build_parser(args_list=None) -> argparse.Namespace:
         help="Input the Files for supplying the genomic intervals (BED or GFF3)",
     )
 
-    # Defines the parser for allowing the user to select the type of file included in the script
+    # Defines the parser for allowing the user to select the
+    # type of file included in the script
     parser.add_argument(
         "--interval-format",
         required=True,
@@ -38,7 +39,8 @@ def build_parser(args_list=None) -> argparse.Namespace:
         "--output-prefix", required=True, help="Input the Prefix for output files"
     )
 
-    # Allows the user to choose between two options for the method to calculate the GC content
+    # Allows the user to choose between two options for
+    # the method to calculate the GC content
     parser.add_argument(
         "--gc-mode",
         choices=["include_n", "exclude_n"],

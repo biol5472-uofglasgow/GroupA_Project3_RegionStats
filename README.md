@@ -1,10 +1,11 @@
 # RegionStats
-hi
+
 [![Tests](https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats/actions/workflows/tests.yml/badge.svg)](https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats/actions/workflows/tests.yml)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **A fast command-line tool for computing sequence composition metrics across genomic intervals.**
+**This a placeholder README and requires edit and review.**
 
 RegionStats extracts sequences from specified genomic regions and calculates statistics like GC content, N-fraction, and sequence length. Designed for bioinformatics workflows requiring quality control and compositional analysis of genomic intervals.
 
