@@ -67,4 +67,3 @@ def build_parser(args_list=None) -> argparse.Namespace:
         if not args.bedgraph:
             parser.error("--bigwig requires --bedgraph")
     return args
-
