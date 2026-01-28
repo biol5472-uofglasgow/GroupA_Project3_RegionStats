@@ -7,7 +7,7 @@ except ImportError:
 
 
 # bedgraph
-def write_bedgraph(interval_metrics, output_path):
+def write_bedgraph(interval_metrics,output_path):
     """
     Write GC fraction per interval as a bedGraph file.
     """
@@ -30,7 +30,7 @@ def write_bedgraph(interval_metrics, output_path):
 
 
 # bigwig
-def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
+def bedgraph_to_bigwig(bedgraph_path,chrom_sizes_path,bigwig_path):
     """
     Convert a bedGraph file into a BigWig file for genome browser use.
     """
