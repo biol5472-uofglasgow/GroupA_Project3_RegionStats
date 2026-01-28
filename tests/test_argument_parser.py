@@ -34,8 +34,9 @@ from regionstats.argument_parser import build_parser
 
 #Generates a common group of tests for checking the command line interface 
 #Returns a set of mock data 
-    def base_args():
-        """Common valid CLI arguments"""
+
+@pytest.fixture
+def base_args():
         return [
             "--fasta", "ref.fasta",
             "--intervals", "test.bed",
@@ -77,3 +78,4 @@ class TestRegionStatsParser:
         
         assert args.bigwig is True
         assert args.bedgraph is True
+
