@@ -1,4 +1,4 @@
-from .file_validation import ValidationError,validate_file_path
+from .file_validation import ValidationError, validate_file_path
 
 
 def validate_bed(bed_path: str):
