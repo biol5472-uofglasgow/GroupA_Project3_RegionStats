@@ -1,5 +1,6 @@
 from .file_validation import ValidationError, validate_file_path
 
+
 def validate_gff3(gff3_path: str):
     """
     Basic GFF3 validation.
@@ -21,9 +22,7 @@ def validate_gff3(gff3_path: str):
                 continue
 
             if not header_found:
-                raise ValidationError(
-                    "GFF3 file is missing '##gff-version 3' header"
-                )
+                raise ValidationError("GFF3 file is missing '##gff-version 3' header")
 
             parts = line.split("\t")
 
@@ -41,11 +40,7 @@ def validate_gff3(gff3_path: str):
                 )
 
             if start < 1:
-                raise ValidationError(
-                    f"GFF3 line {line_number} has start < 1"
-                )
+                raise ValidationError(f"GFF3 line {line_number} has start < 1")
 
             if end < start:
-                raise ValidationError(
-                    f"GFF3 line {line_number} has end < start"
-                )
+                raise ValidationError(f"GFF3 line {line_number} has end < start")
