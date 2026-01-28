@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         uv venv
-        uv pip install -e ".[dev]"
+        uv pip install ".[dev]"
     
     - name: Check formatting with Black
       run: |
@@ -40,10 +40,5 @@ jobs:
     
     - name: Run tests 
       run: |
-        if [ -n "$(find tests -name 'test_*.py' 2>/dev/null)" ]; then
           uv run pytest tests/ -v
-        else
-          echo "No tests found yet - skipping"
-        fi
       shell: bash
-      continue-on-error: true
