@@ -31,12 +31,11 @@ def build_parser(args_list=None):
 
 from regionstats.argument_parser import build_parser
 
-class TestRegionStatsParser:
 
 #Generates a common group of tests for checking the command line interface 
-
-    def base_args(self):
-        #Returns a set of mock data 
+#Returns a set of mock data 
+    def base_args():
+        """Common valid CLI arguments"""
         return [
             "--fasta", "ref.fasta",
             "--intervals", "test.bed",
@@ -44,6 +43,8 @@ class TestRegionStatsParser:
             "--output-prefix", "out"
         ]
 
+class TestRegionStatsParser:
+    
     def test_basic_parsing(self, base_args):
         
         args = build_parser(base_args)
@@ -64,15 +65,15 @@ class TestRegionStatsParser:
 
     #Generates a mock scene where bigwig is provided but BED graph is absent and check if it raises an error 
     def test_bigwig_failure(self, base_args):
-        base_args.append("--bigwig")
+        base_args = base_args + ["--bigwig"]
 
         with pytest.raises(SystemExit):
             build_parser(base_args)
 
     #Generates a mock scene where both bigwig and BEDgraph is provided 
     def test_bigwig_success(self, base_args):
-      
-        base_args.extend(["--bigwig", "--bedgraph"])
+        base_args = base_args + ["--bigwig", "--bedgraph"]
         args = build_parser(base_args)
+        
         assert args.bigwig is True
         assert args.bedgraph is True
