@@ -1,6 +1,5 @@
 from Bio import SeqIO
-
-from .file_validation import ValidationError, validate_file_path
+from .file_validation import ValidationError,validate_file_path
 
 
 def validate_fasta(fasta_path: str):
