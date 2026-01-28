@@ -37,9 +37,7 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
         raise FileNotFoundError(f"bedGraph not found: {bedgraph_path}")
 
     if not chrom_sizes_path.exists():
-        raise FileNotFoundError(
-            f"Chrom sizes file not found: {chrom_sizes_path}"
-        )
+        raise FileNotFoundError(f"Chrom sizes file not found: {chrom_sizes_path}")
 
     if pyBigWig is None:
         raise ImportError("pyBigWig is required for BigWig output")
