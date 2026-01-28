@@ -27,5 +27,5 @@ def load_intervals(interval_file, format, featuretype={"region"}):
 
     else:  # Raise value error if unsupported format entered
         raise ValueError(
-            f"Invalid interval format {format}. Please re-enter either gff3 or bed and try again!"
+            f"Invalid format {format}. Enter either gff3 or bed!"
         )
