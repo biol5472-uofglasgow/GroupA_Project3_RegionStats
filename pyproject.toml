@@ -33,7 +33,7 @@ dev = [
 regionstats = "regionstats.__main__:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/regionstats"]
+packages = ["regionstats"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
