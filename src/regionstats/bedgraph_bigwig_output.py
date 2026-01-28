@@ -30,12 +30,11 @@ def write_bedgraph(interval_metrics, output_path):
 
 
 # bigwig
+
 def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
     """
-    Convert a bedGraph file into a BigWig file for genome browser use.
+    Convert a bedGraph file into a bigwig file for genome browser use.
     """
-    if pybigwig is None:
-        raise ImportError("pyBigWig is required for BigWig output")
 
     bedgraph_path = Path(bedgraph_path)
     chrom_sizes_path = Path(chrom_sizes_path)
@@ -45,6 +44,9 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
 
     if not chrom_sizes_path.exists():
         raise FileNotFoundError(f"Chrom sizes file not found: {chrom_sizes_path}")
+
+    if pyBigWig is None:
+        raise ImportError("pybigwig is required for BigWig output")
 
     chrom_sizes = []
     with open(chrom_sizes_path) as f:
@@ -61,5 +63,13 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
                 continue
 
             chrom, start, end, value = line.strip().split()
+            bw.addEntries(
+                chrom,
+                int(start),
+                ends=int(end),
+                values=float(value),
+            )
+
+    bw.close()
             bw.addEntries(chrom, int(start), ends=int(end), values=float(value))
     bw.close()
