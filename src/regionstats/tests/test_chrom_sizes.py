@@ -1,14 +1,19 @@
-from pyfaidx import Fasta
+import tempfile
+from pathlib import Path
+from regionstats.chrom_sizes import write_chrom_sizes_from_fasta
 
 
-def write_chrom_sizes_from_fasta(fasta_path, output_path):
-    """
-    Generate chromosome sizes file from FASTA file path.
-    """
+def test_chrom_sizes():
+    fasta = tempfile.NamedTemporaryFile(delete=False)
+    fasta.write(b">chr1\nATGC\n>chr2\nAAAAAA\n")
+    fasta.close()
 
-    fasta = Fasta(fasta_path)
+    out = tempfile.NamedTemporaryFile(delete=False)
+    out.close()
 
-    with open(output_path, "w") as out:
-        for chrom in fasta.keys():
-            size = len(fasta[chrom])
-            out.write(f"{chrom}\t{size}\n")
+    write_chrom_sizes_from_fasta(fasta.name, out.name)
+
+    text = Path(out.name).read_text()
+
+    assert "chr1\t4" in text
+    assert "chr2\t6" in text
