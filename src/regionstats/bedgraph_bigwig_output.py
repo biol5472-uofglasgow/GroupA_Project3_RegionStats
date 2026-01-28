@@ -59,8 +59,8 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
             chrom, start, end, value = line.strip().split()
 
             bw.addEntries(
-               [chrom],
-               [int(start)],
+                [chrom],
+                [int(start)],
                 ends=[int(end)],
                 values=[float(value)],
             )
