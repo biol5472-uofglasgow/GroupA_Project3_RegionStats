@@ -17,7 +17,7 @@ COPY pyproject.toml README.md ./
 COPY src/ ./src/
 
 # Install the package and dependencies
-RUN uv pip install --system -e .
+RUN uv pip install --system .
 
 ENTRYPOINT ["python", "-m", "regionstats"]
 

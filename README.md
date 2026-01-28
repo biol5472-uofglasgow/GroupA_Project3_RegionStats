@@ -8,7 +8,7 @@
 **This a placeholder README and requires edit and review.**
 
 RegionStats extracts sequences from specified genomic regions and calculates statistics like GC content, N-fraction, and sequence length. Designed for bioinformatics workflows requiring quality control and compositional analysis of genomic intervals.
-
+dd
 ---
 
 ## ✨ Features
