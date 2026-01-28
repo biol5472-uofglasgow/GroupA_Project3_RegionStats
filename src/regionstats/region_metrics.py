@@ -52,8 +52,10 @@ assert n_fraction("nnnn") == 1
     *******************
     seq : str - DNA sequence of a specific region isolated from the genomic FASTA file
     mode : str
-    'include_n' -> GC / total length #Includes the (Ambiguous Base Calls(Ns)  in the calculation of the GC content
-    'exclude_n' -> GC / (total length - N count) #Excludes the (Ambiguous Base Calls(Ns)  in the calculation of the GC content
+    'include_n' -> GC / total length 
+    #Includes the (Ambiguous Base Calls(Ns)  in the calculation of the GC content
+    'exclude_n' -> GC / (total length - N count) 
+    #Excludes the (Ambiguous Base Calls(Ns)  in the calculation of the GC content
 """
 
 
