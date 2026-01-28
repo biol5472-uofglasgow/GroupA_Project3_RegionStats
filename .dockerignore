@@ -1,0 +1,71 @@
+nano .dockerignore
+```
+
+**Add this content:**
+```
+# Git
+.git
+.github
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+tests/
+*.test
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Documentation (not needed in image)
+docs/
+*.md
+!README.md
+
+# Input/Output (don't include user data)
+Input/
+Output/
+output/
+*.fasta
+*.fa
+*.bed
+*.gff
+*.gff3
+
+# Logs and temporary files
+*.log
+*.tmp
+.cache/
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Miscellaneous
+ruff_errors.txt
+*.bak
