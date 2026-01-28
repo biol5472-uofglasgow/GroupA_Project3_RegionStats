@@ -27,7 +27,7 @@ def test_n_fraction_ambiguous():
 
 def test_n_fraction_case():
     assert n_fraction("ATGC") == 0.0
-    assert n_fraction("atgc") == 1.0 
+    assert n_fraction("atgc") == 0.0 
 
 # Test for GC Fraction 
 
@@ -44,3 +44,4 @@ def test_gc_fraction_excluding_n():
 def test_gc_fraction_all_ambiguous_check():
     result = gc_fraction("NNNN", mode="exclude_n")
     assert result == 0.0
+
