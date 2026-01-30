@@ -7,6 +7,8 @@ def load_intervals(interval_file, format, featuretype={"region"}):
     Input: BED/GFF3 file, file format, feature type
     """
     format = format.lower()  # Ensure format is in lowercase
+    interval_file=str(interval_file) #Convert Path object to string
+
 
     if format == "bed":
         return pr.read_bed(interval_file)  # If file is in .bed format
