@@ -32,11 +32,11 @@ jobs:
     
     - name: Check formatting with Black
       run: |
-        uv run black --check src/ || true
+        uv run black --check src/
     
     - name: Lint with Ruff
       run: |
-        uv run ruff check src/ || true
+        uv run ruff check src/
     
     - name: Run tests 
       run: |
