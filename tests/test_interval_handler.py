@@ -1,13 +1,12 @@
 import pytest
 import pyranges as pr
-from interval_handler import load_intervals
+from regionstats.interval_handler import load_intervals
 from pathlib import Path
 
 
-# Define paths to test interval files
 TEST_DIR = Path(__file__).resolve().parent.parent
-BED_PATH = TEST_DIR / "intervals.bed"
-GFF_PATH = TEST_DIR / "intervals.gff3"
+BED_PATH = TEST_DIR / "Input" / "intervals.bed"
+GFF_PATH = TEST_DIR / "Input" / "intervals.gff3"
 
 # Sanity check to ensure test files exist
 def test_interval_files_exist():
