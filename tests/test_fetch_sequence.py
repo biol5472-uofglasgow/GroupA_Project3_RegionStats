@@ -1,12 +1,11 @@
 import pytest
 from pyfaidx import Fasta
-from fetch_sequence import open_fasta, fetch_sequence
-
+from regionstats.fetch_sequence import open_fasta, fetch_sequence
 
 # Fixture to provide a reference FASTA file for pytests
 @pytest.fixture(scope="session")
 def ref_fasta():
-    return open_fasta("ref.fasta")
+    return open_fasta("Input/ref.fasta")
 
 
 #Tests that open_fasta function returns a Fasta object
