@@ -18,4 +18,15 @@ def fetch_sequence(fasta_var, seqid, start, end):
     :param start: start position of region
     :param end: end position of region
     """
+    # Add conditions to catch errors
+    if start < 0:
+        raise IndexError("Start coordinate cannot be negative")
+
+    if start > end:
+        raise ValueError("Start coordinate must be smaller than end coordinate")
+
+    seq_len = len(fasta_var[seqid])
+    if end > seq_len:
+        raise IndexError("End coordinate exceeds read length")
+
     return fasta_var[seqid][start:end]
