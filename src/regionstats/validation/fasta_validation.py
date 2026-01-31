@@ -1,5 +1,7 @@
 from Bio import SeqIO
+
 from .file_validation import ValidationError, validate_file_path
+
 
 def validate_fasta(fasta_path: str):
     validate_file_path(fasta_path, "FASTA")
@@ -17,6 +19,4 @@ def validate_fasta(fasta_path: str):
 
         for base in seq:
             if base not in "ACGTN":
-                raise ValidationError(
-                    f"Invalid base '{base}' in {record.id}"
-                )
+                raise ValidationError(f"Invalid base '{base}' in {record.id}")

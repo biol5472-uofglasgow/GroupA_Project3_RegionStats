@@ -1,8 +1,11 @@
 from pathlib import Path
 
+
 class ValidationError(Exception):
     """Raised when input validation fails."""
+
     pass
+
 
 def validate_file_path(path: str, description: str):
     p = Path(path)
