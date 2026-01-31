@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 # Define paths to test interval files
-TEST_DIR = Path(__file__).resolve().parent
+TEST_DIR = Path(__file__).resolve().parent.parent
 BED_PATH = TEST_DIR / "intervals.bed"
 GFF_PATH = TEST_DIR / "intervals.gff3"
 
