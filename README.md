@@ -25,15 +25,15 @@ RegionStats extracts sequences from specified genomic regions and calculates sta
 
 ## 🔧 Installation
 
-### Option 1: pip (Coming Soon)
+### Option 1: pip
 
 ```bash
-pip install regionstats
+pip install git+https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats.git
 ```
 
 *Note: PyPI package will be available in a future release.*
 
-### Option 2: Docker (Recommended for Reproducibility)
+### Option 2: Docker 
 
 ```bash
 # Build locally
