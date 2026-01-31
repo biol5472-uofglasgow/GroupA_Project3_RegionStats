@@ -36,7 +36,7 @@ jobs:
     
     - name: Run Ruff auto-fix
       run: |
-        ruff check src/ --fix --unsafe-fixes || true
+        ruff check src/ --fix --unsafe-fixes
     
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v5
