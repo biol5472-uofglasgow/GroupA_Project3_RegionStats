@@ -62,6 +62,13 @@ def build_parser(args_list=None) -> argparse.Namespace:
         help="Generate BigWig output (chrom sizes inferred from FASTA)",
     )
 
+    #Enables HTML report output
+    parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Generate an HTML report with summary statistics and plots",
+    )
+    
     args = parser.parse_args(args_list)
 
     # Logical validation
@@ -69,3 +76,5 @@ def build_parser(args_list=None) -> argparse.Namespace:
         if not args.bedgraph:
             parser.error("--bigwig requires --bedgraph")
     return args
+
+
