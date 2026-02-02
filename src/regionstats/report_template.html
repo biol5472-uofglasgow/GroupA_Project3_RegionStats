@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>RegionStats Report</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    table { border-collapse: collapse; }
+    th, td { border: 1px solid #ccc; padding: 6px 10px; }
+  </style>
+</head>
+
+<body>
+
+<h1>RegionStats: Interval Metrics</h1>
+
+<h2>Provenance</h2>
+<ul>
+  <li><b>FASTA filepath:</b> {{ provenance.fasta }}</li>
+  <li><b>Intervals filepath:</b> {{ provenance.intervals }}</li>
+  <li><b>GC mode:</b> {{ provenance.gc_mode }}</li>
+  <li><b>Tool version:</b> {{ provenance.version }}</li>
+</ul>
+
+<h2>GC Fraction Histogram</h2>
+{% if gc_histogram %}
+<img src="{{ gc_histogram }}" width="600">
+{% else %}
+<p>GC fraction histogram not available.</p>
+{% endif %}
+
+<h2>N Fraction Histogram</h2>
+{% if n_histogram %}
+<img src="{{ n_histogram }}" width="600">
+{% else %}
+<p>N fraction histogram not available.</p>
+{% endif %}
+
+<h2>GC Fraction by Chromosome</h2>
+{% if gc_chrom_plots %}
+  {% for chrom, plot_file in gc_chrom_plots.items() %}
+    <h3>{{ chrom }}</h3>
+    <img src="{{ plot_file }}" width="800">
+  {% endfor %}
+{% else %}
+<p>No chromosome-specific GC fraction plots available.</p>
+{% endif %}
+
+
+<h2>Per-interval Metrics</h2>
+<table>
+  <tr>
+    {% for col in columns %}
+      <th>{{ col }}</th>
+    {% endfor %}
+  </tr>
+  {% for row in rows %}
+  <tr>
+    {% for col in columns %}
+      <td>{{ row[col] }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>
