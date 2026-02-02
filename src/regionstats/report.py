@@ -1,10 +1,11 @@
 import json
-from pathlib import Path
-import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
-from jinja2 import Environment, FileSystemLoader
 import subprocess
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import pandas as pd
+from jinja2 import Environment, FileSystemLoader
+from matplotlib.ticker import MaxNLocator
 
 
 def generate_gc_histogram(df, outdir):
@@ -13,7 +14,7 @@ def generate_gc_histogram(df, outdir):
     """
     outdir.mkdir(exist_ok=True)
 
-    #Change bin number according to number of intervals
+    # Change bin number according to number of intervals
     if len(df) <= 50:
         bins = 10
     elif len(df) <= 200:
@@ -23,11 +24,7 @@ def generate_gc_histogram(df, outdir):
 
     plt.figure(figsize=(6, 4))
     plt.hist(
-        df["gc_fraction"],
-        bins=bins,
-        color="skyblue",
-        edgecolor="black",
-        alpha=0.85
+        df["gc_fraction"], bins=bins, color="skyblue", edgecolor="black", alpha=0.85
     )
 
     plt.xlabel("GC fraction", fontsize=11, fontweight="bold")
@@ -59,13 +56,7 @@ def generate_n_fraction_histogram(df, outdir):
 
     plt.figure(figsize=(6, 4))
 
-    plt.hist(
-        df["n_fraction"],
-        bins=bins,
-        color="salmon",      
-        edgecolor="black",
-        alpha=0.85
-    )
+    plt.hist(df["n_fraction"], bins=bins, color="salmon", edgecolor="black", alpha=0.85)
 
     plt.xlabel("N fraction", fontsize=11, fontweight="bold")
     plt.ylabel("Number of regions", fontsize=11, fontweight="bold")
@@ -92,12 +83,18 @@ def generate_bedgraph_chrom_plots(bedgraph_path, outdir):
     bedgraph_path = Path(bedgraph_path)
     if not bedgraph_path.exists():
         return {}
-    
+
     # Ensure output directory exists
     outdir.mkdir(exist_ok=True)
 
     # Read BedGraph file
-    df_bg = pd.read_csv(bedgraph_path, sep="\t", header=None, names=["chrom", "start", "end", "value"],skiprows=1)
+    df_bg = pd.read_csv(
+        bedgraph_path,
+        sep="\t",
+        header=None,
+        names=["chrom", "start", "end", "value"],
+        skiprows=1,
+    )
     chroms = df_bg["chrom"].unique()
 
     # Create dict to store chromosome plot files
@@ -107,23 +104,17 @@ def generate_bedgraph_chrom_plots(bedgraph_path, outdir):
         chr_df = df_bg[df_bg["chrom"] == chrom]
 
         # Prepare data for plotting
-        x = (chr_df["start"] + chr_df["end"]) / 2 # Midpoint for bar 
-        y = chr_df["value"] 
-        widths = chr_df["end"] - chr_df["start"] # Width of each bar
+        x = (chr_df["start"] + chr_df["end"]) / 2  # Midpoint for bar
+        y = chr_df["value"]
+        widths = chr_df["end"] - chr_df["start"]  # Width of each bar
 
         # Create bar plot
         plt.figure(figsize=(10, 3))
-        plt.bar(
-            x, y,
-            width=widths,
-            color="steelblue",
-            align="center",
-            linewidth=0
-        )
+        plt.bar(x, y, width=widths, color="steelblue", align="center", linewidth=0)
         plt.ylim(0, 1)
         plt.xlabel("Genomic position (bp)", fontsize=11, fontweight="bold")
-        plt.ylabel("GC fraction" , fontsize=11, fontweight="bold")
-        plt.title(f"GC fraction along {chrom}" , fontsize=12, pad=8, fontweight="bold")
+        plt.ylabel("GC fraction", fontsize=11, fontweight="bold")
+        plt.title(f"GC fraction along {chrom}", fontsize=12, pad=8, fontweight="bold")
 
         plt.grid(axis="y", linestyle="--", alpha=0.4)
         plt.tight_layout()
@@ -151,16 +142,13 @@ def generate_bigwig_tracks(bigwig_path, chrom_sizes_path, outdir):
         return {}
 
     chrom_sizes = pd.read_csv(
-        chrom_sizes_path,
-        sep="\t",
-        header=None,
-        names=["chrom", "length"]
+        chrom_sizes_path, sep="\t", header=None, names=["chrom", "length"]
     )
 
     # Ensure output directory exists
     outdir.mkdir(exist_ok=True)
 
-    chrom_plots = {} # Create dict to store chromosome plot files
+    chrom_plots = {}  # Create dict to store chromosome plot files
 
     # Iterate through chromosomes to create plots
     for _, row in chrom_sizes.iterrows():
@@ -168,46 +156,53 @@ def generate_bigwig_tracks(bigwig_path, chrom_sizes_path, outdir):
         start = 0
         end = row["length"]
 
-        #Calculate ideal bin number based on chromosome length
-        target_reso = 1000          # target resolution in base pairs
-        chrom_length = row["length"]    # in base pairs
+        # Calculate ideal bin number based on chromosome length
+        target_reso = 1000  # target resolution in base pairs
+        chrom_length = row["length"]  # in base pairs
         bin_size = max(1, chrom_length // target_reso)  # ensure bin size is at least 1
         number_of_bins = chrom_length // bin_size
-
 
         # Create pyGenomeTracks config file
         config_file = outdir / f"{chrom}_track.ini"
         with open(config_file, "w") as f:
-            f.write(f"[GC fraction]\n")
+            f.write("[GC fraction]\n")
             f.write(f"file = {bigwig_path}\n")
-            f.write("file_type = bigwig\n")      
+            f.write("file_type = bigwig\n")
             f.write("title = GC fraction\n")
             f.write("color = #0d6607\n")
             f.write("alpha=1\n")
-            f.write('min_value = 0\n')
-            f.write('max_value = 1\n')
+            f.write("min_value = 0\n")
+            f.write("max_value = 1\n")
             f.write("height = 8\n")
             f.write(f"number_of_bins={number_of_bins}\n")
-    
 
-        #Create output plot file for each chromosome
+        # Create output plot file for each chromosome
         output_file = outdir / f"gc_fraction_{chrom}.png"
 
         # Call pyGenomeTracks CLI to generate plot
-        subprocess.run([
-            "pyGenomeTracks",
-            "--tracks", str(config_file),
-            "--region", f"{chrom}:{start}-{end}",
-            "--outFileName", str(output_file),
-            "--dpi", "300"
-        ], check=True)
+        subprocess.run(
+            [
+                "pyGenomeTracks",
+                "--tracks",
+                str(config_file),
+                "--region",
+                f"{chrom}:{start}-{end}",
+                "--outFileName",
+                str(output_file),
+                "--dpi",
+                "300",
+            ],
+            check=True,
+        )
 
         chrom_plots[chrom] = output_file.name
 
     return chrom_plots
 
 
-def generate_report(metrics_tsv, run_json, bedgraph_path=None, bigwig_path=None, chrom_sizes_path=None):
+def generate_report(
+    metrics_tsv, run_json, bedgraph_path=None, bigwig_path=None, chrom_sizes_path=None
+):
     """
     Generate HTML report summarising generated outputs and metrics. Includes:
     - Provenance information from json file
@@ -223,7 +218,7 @@ def generate_report(metrics_tsv, run_json, bedgraph_path=None, bigwig_path=None,
     # Convert paths to Path objects
     metrics_tsv = Path(metrics_tsv)
     run_json = Path(run_json)
-    report_dir = Path("report") # Output "report" directory
+    report_dir = Path("report")  # Output "report" directory
     report_dir.mkdir(exist_ok=True)
 
     # Read metrics TSV and run json files
@@ -232,25 +227,33 @@ def generate_report(metrics_tsv, run_json, bedgraph_path=None, bigwig_path=None,
 
     # Generate GC and N fraction histogram
     gc_plot = generate_gc_histogram(df, report_dir)
-    n_plot  = generate_n_fraction_histogram(df, report_dir)
-
+    n_plot = generate_n_fraction_histogram(df, report_dir)
 
     # Determines which track plotting method to use: if BedGraph provided only, use BedGraph; else if BigWig provided, use BigWig
-    if bigwig_path and Path(bigwig_path).exists() and chrom_sizes_path and Path(chrom_sizes_path).exists():
+    if (
+        bigwig_path
+        and Path(bigwig_path).exists()
+        and chrom_sizes_path
+        and Path(chrom_sizes_path).exists()
+    ):
         # Use pyGenomeTracks CLI for BigWig if exists
-        gc_chrom_plots = generate_bigwig_tracks(bigwig_path, chrom_sizes_path, report_dir)
+        gc_chrom_plots = generate_bigwig_tracks(
+            bigwig_path, chrom_sizes_path, report_dir
+        )
 
     elif bedgraph_path and Path(bedgraph_path).exists():
         # Else use Bedgraph matplotlib if --bigwig not provided
         gc_chrom_plots = generate_bedgraph_chrom_plots(bedgraph_path, report_dir)
 
-    else: # No chromosome plots if neither provided
+    else:  # No chromosome plots if neither provided
         gc_chrom_plots = {}
 
     # Copy provenance + BedGraph
     (report_dir / "run.json").write_text(run_json.read_text())
     if bedgraph_path and Path(bedgraph_path).exists():
-        (report_dir / Path(bedgraph_path).name).write_text(Path(bedgraph_path).read_text())
+        (report_dir / Path(bedgraph_path).name).write_text(
+            Path(bedgraph_path).read_text()
+        )
 
     # Render HTML
     env = Environment(loader=FileSystemLoader("src/regionstats"))
@@ -261,13 +264,17 @@ def generate_report(metrics_tsv, run_json, bedgraph_path=None, bigwig_path=None,
         provenance={
             "fasta": json_data["inputs"]["fasta"],
             "intervals": json_data["inputs"]["intervals"],
-            "gc_mode": "Include N" if json_data["parameters"]["gc_mode"] == "include_n" else "Exclude N",
-            "version": json_data["version"]
+            "gc_mode": (
+                "Include N"
+                if json_data["parameters"]["gc_mode"] == "include_n"
+                else "Exclude N"
+            ),
+            "version": json_data["version"],
         },
         bedgraph=Path(bedgraph_path).name if bedgraph_path else None,
         gc_histogram=gc_plot,
         n_histogram=n_plot,
-        gc_chrom_plots=gc_chrom_plots
+        gc_chrom_plots=gc_chrom_plots,
     )
 
     (report_dir / "report.html").write_text(html)
