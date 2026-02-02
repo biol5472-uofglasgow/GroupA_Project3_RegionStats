@@ -3,19 +3,43 @@
 <head>
   <meta charset="utf-8">
   <title>RegionStats Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <style>
-    body { font-family: sans-serif; margin: 40px; }
-    table { border-collapse: collapse; }
-    th, td { border: 1px solid #ccc; padding: 6px 10px; }
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffefd17a;
+        margin-top: 20px;
+    }
+    h1, h2, h5 {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    .provenance li b {
+        color: #2c3e50;
+        font-size: larger;
+    }
+    .table thead th {
+        background-color: #2e4053;
+        color: white;
+    }
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #ecf0f1;
+    }
+    .card {
+        box-shadow: 0 2px 6px rgba(155, 148, 148, 0.664);
+    }
+    .img-container {
+        text-align: center;
+    }
   </style>
 </head>
 
-<body>
+<body class ="container">
 
-<h1>RegionStats: Interval Metrics</h1>
+<h1 class="mt-10 mb-6" style="text-align: center;">RegionStats: Interval Metrics</h1>
 
 <h2>Provenance</h2>
-<ul>
+<ul class="provenance">
   <li><b>FASTA filepath:</b> {{ provenance.fasta }}</li>
   <li><b>Intervals filepath:</b> {{ provenance.intervals }}</li>
   <li><b>GC mode:</b> {{ provenance.gc_mode }}</li>
@@ -23,45 +47,61 @@
 </ul>
 
 <h2>GC Fraction Histogram</h2>
-{% if gc_histogram %}
-<img src="{{ gc_histogram }}" width="600">
-{% else %}
-<p>GC fraction histogram not available.</p>
-{% endif %}
+<div class="card mb-4 img-container" style="margin-bottom:40px; text-align:center;">
+    <img src="{{ gc_histogram }}" class="img-fluid d-block mx-auto mb-6" alt="GC fraction histogram" style="width:60%;">
+</div>
 
 <h2>N Fraction Histogram</h2>
-{% if n_histogram %}
-<img src="{{ n_histogram }}" width="600">
-{% else %}
-<p>N fraction histogram not available.</p>
-{% endif %}
+<div class="card mb-4 img-container" style="margin-bottom:40px; text-align:center;">
+    <img src="{{ n_histogram }}" class="img-fluid d-block mx-auto mb-6" alt="N fraction histogram" style="width:60%;">
+</div>
 
-<h2>GC Fraction by Chromosome</h2>
+<h2>Chromosome GC fraction plots</h2>
+
 {% if gc_chrom_plots %}
   {% for chrom, plot_file in gc_chrom_plots.items() %}
-    <h3>{{ chrom }}</h3>
-    <img src="{{ plot_file }}" width="800">
+    <div class="img-container mb-4">
+      <img src="{{ plot_file }}" class="img-fluid d-block mx-auto" 
+           alt="GC fraction along {{ chrom }}">
+      <p class="text-center mt-1 fw-bold">{{ chrom }}</p>
+    </div>
   {% endfor %}
 {% else %}
-<p>No chromosome-specific GC fraction plots available.</p>
+  <p>No chromosome plots available.</p>
 {% endif %}
 
 
 <h2>Per-interval Metrics</h2>
-<table>
-  <tr>
-    {% for col in columns %}
-      <th>{{ col }}</th>
-    {% endfor %}
-  </tr>
-  {% for row in rows %}
-  <tr>
-    {% for col in columns %}
-      <td>{{ row[col] }}</td>
-    {% endfor %}
-  </tr>
-  {% endfor %}
-</table>
+<div class="table-responsive mb-6">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                {% for col in columns %}
+                <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                {% for col in columns %}
+                <td
+                    {% if col == 'gc_fraction' and row[col] >= 0.5 %}
+                        style="background-color:#f8d7da; font-weight:bold;"
+                    {% endif %}
+                    {% if col == 'n_fraction' and row[col] > 0 %}
+                        style="background-color:#fcf3cf;"
+                    {% endif %}
+                >
+                    {{ row[col] }}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>
+
