@@ -15,6 +15,7 @@ from .interval_handler import load_intervals
 from .output_writer import write_run_json, write_tsv
 from .region_metrics import gc_fraction, n_fraction, sequence_length
 from .validation import validate_bed, validate_fasta, validate_gff3
+from .report import generate_report
 
 
 def main() -> int:
@@ -93,13 +94,16 @@ def main() -> int:
             output_dir.mkdir(parents=True, exist_ok=True)
 
         write_tsv(metrics, tsv_path)
-        write_bedgraph(metrics, bedgraph_path)
+        if args.bedgraph:
+            write_bedgraph(metrics, bedgraph_path)
+
         if args.bigwig:
             chrom_sizes_path = f"{args.output_prefix}.chrom.sizes"
             write_chrom_sizes_from_fasta(args.fasta, chrom_sizes_path)
 
             bigwig_path = f"{args.output_prefix}_region_metrics.bigWig"
             bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path)
+            
         write_run_json(
             fasta_path=args.fasta,
             intervals=args.intervals,
@@ -116,9 +120,24 @@ def main() -> int:
         print(f"Error writing outputs: {e}")
         return 1
 
+    # Generate HTML report if requested in CLI
+    try:
+        if args.report:
+            generate_report(
+                metrics_tsv=tsv_path,
+                run_json=json_path,
+                bedgraph_path=bedgraph_path if args.bedgraph else None,
+                bigwig_path=bigwig_path if args.bigwig else None,
+                chrom_sizes_path=chrom_sizes_path if args.bigwig else None
+            )
+            print("HTML report generated in 'report' directory.")
+
+    except Exception as e:
+        print(f"Error generating report: {e}")
+        return 1
+    
     return 0
-
-
+    
 if __name__ == "__main__":
     import sys
 
