@@ -1,5 +1,7 @@
-
-from typing import List, Dict, Any
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List
 
 HEADERS: List[str] = [
     "seqid",
@@ -9,7 +11,7 @@ HEADERS: List[str] = [
     "length",
     "gc_fraction",
     "n_fraction",
-] #Gives a prior definition of the headers to be used in the tsv file 
+]  # Gives a prior definition of the headers to be used in the tsv file
 
 """
     Writes the per-region sequence metrics to a TSV file.
@@ -17,20 +19,19 @@ HEADERS: List[str] = [
 
 """
 
-def write_tsv(
-    records: List[Dict[str, Any]],
-    output_path: str
-) -> None:
- 
+
+def write_tsv(records: List[Dict[str, Any]], output_path: str) -> None:
+
     if not records:
-        raise ValueError("No records are available for TSV output") #handles empty records 
+        raise ValueError(
+            "No records are available for TSV output"
+        )  # handles empty records
 
     with open(output_path, "w", newline="") as out:
-       
-        out.write("\t".join(HEADERS) + "\n")  # Writes the header line 
 
-        
-        for record in records: # Write out the rows in the .tsv file 
+        out.write("\t".join(HEADERS) + "\n")  # Writes the header line
+
+        for record in records:  # Write out the rows in the .tsv file
             row = [
                 str(record["seqid"]),
                 str(record["start"]),
@@ -40,15 +41,13 @@ def write_tsv(
                 f"{record['gc_fraction']:.6f}",
                 f"{record['n_fraction']:.6f}",
             ]
-            out.write("\t".join(row) + "\n") 
+            out.write("\t".join(row) + "\n")
 
-import json
-from datetime import datetime, timezone
-from pathlib import Path
 
 """
     Write the run metadata to a JSON file.
 """
+
 
 def write_run_json(
     fasta_path: str,
@@ -57,9 +56,9 @@ def write_run_json(
     gc_mode: str,
     output_prefix: str,
     num_intervals: int,
-    output_path: str
-) -> None: 
-   
+    output_path: str,
+) -> None:
+
     metadata = {
         "tool": "regionstats",
         "version": "0.1.0",
@@ -81,6 +80,6 @@ def write_run_json(
             "num_intervals": num_intervals,
         },
     }
-    
+
     with open(output_path, "w") as out:
         json.dump(metadata, out, indent=2)

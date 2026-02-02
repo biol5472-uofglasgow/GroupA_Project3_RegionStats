@@ -1,11 +1,11 @@
 from pathlib import Path
+
 try:
     import pyBigWig
 except ImportError:
     pyBigWig = None
 
 
-#bedgraph
 def write_bedgraph(interval_metrics, output_path):
     """
     Write GC fraction per interval as a bedGraph file.
@@ -17,24 +17,19 @@ def write_bedgraph(interval_metrics, output_path):
         out.write('track type=bedGraph name="GC_fraction"\n')
 
         for region in interval_metrics:
-            try:
-                chrom = region["seqid"]
-                start = int(region["start"])
-                end = int(region["end"])
-                gc = float(region["gc_fraction"])
-            except (KeyError, ValueError, TypeError):
-                raise ValueError("Invalid interval data for bedGraph output")
+            chrom = region["seqid"]
+            start = int(region["start"])
+            end = int(region["end"])
+            gc = float(region["gc_fraction"])
 
             out.write(f"{chrom}\t{start}\t{end}\t{gc:.4f}\n")
 
-#bigwig
+
 def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
     """
     Convert a bedGraph file into a BigWig file for genome browser use.
     """
-    if pyBigWig is None:
-        raise ImportError("pyBigWig is required for BigWig output")
-        
+
     bedgraph_path = Path(bedgraph_path)
     chrom_sizes_path = Path(chrom_sizes_path)
 
@@ -43,6 +38,9 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
 
     if not chrom_sizes_path.exists():
         raise FileNotFoundError(f"Chrom sizes file not found: {chrom_sizes_path}")
+
+    if pyBigWig is None:
+        raise ImportError("pyBigWig is required for BigWig output")
 
     chrom_sizes = []
     with open(chrom_sizes_path) as f:
@@ -59,10 +57,12 @@ def bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path):
                 continue
 
             chrom, start, end, value = line.strip().split()
+
             bw.addEntries(
-                chrom,
-                int(start),
-                ends=int(end),
-                values=float(value)
+                [chrom],
+                [int(start)],
+                ends=[int(end)],
+                values=[float(value)],
             )
+
     bw.close()

@@ -24,3 +24,14 @@ htmlcov/
 
 # Logs
 *.log
+
+# Output directories (test data)
+output/
+Output/
+
+# Generated FASTA indices
+*.fai
+
+# BigWig intermediate files
+*.chrom.sizes
+
