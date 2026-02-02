@@ -10,7 +10,7 @@ from matplotlib.ticker import MaxNLocator
 
 def generate_gc_histogram(df, outdir):
     """
-    Generate and save a histogram plot of GC fraction 
+    Generate and save a histogram plot of GC fraction
     distribution across all regions and chromosomes
     """
     outdir.mkdir(exist_ok=True)
@@ -78,7 +78,7 @@ def generate_n_fraction_histogram(df, outdir):
 
 def generate_bedgraph_chrom_plots(bedgraph_path, outdir):
     """
-    Generate per-chromosome GC fraction bar plots from a 
+    Generate per-chromosome GC fraction bar plots from a
     BedGraph if --bigwig not provided
     """
     # Check if BedGraph file exists
@@ -134,7 +134,7 @@ def generate_bedgraph_chrom_plots(bedgraph_path, outdir):
 
 def generate_bigwig_tracks(bigwig_path, chrom_sizes_path, outdir):
     """
-    Generate per-chromosome GC fraction plots using pyGenomeTracks from 
+    Generate per-chromosome GC fraction plots using pyGenomeTracks from
     a BigWig file if both --bigwig and --bedgraph provided
     """
     # Check if BigWig and chrom sizes files exist
@@ -232,8 +232,8 @@ def generate_report(
     gc_plot = generate_gc_histogram(df, report_dir)
     n_plot = generate_n_fraction_histogram(df, report_dir)
 
-    # Determines which track plotting method to use: if BedGraph provided only, 
-    #use BedGraph; else if BigWig provided, use BigWig
+    # Determines which track plotting method to use: if BedGraph provided only,
+    # use BedGraph; else if BigWig provided, use BigWig
     if (
         bigwig_path
         and Path(bigwig_path).exists()
