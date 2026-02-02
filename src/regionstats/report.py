@@ -97,7 +97,7 @@ def generate_bedgraph_chrom_plots(bedgraph_path, outdir):
     outdir.mkdir(exist_ok=True)
 
     # Read BedGraph file
-    df_bg = pd.read_csv(bedgraph_path, sep="\t", header=None, names=["chrom", "start", "end", "value"])
+    df_bg = pd.read_csv(bedgraph_path, sep="\t", header=None, names=["chrom", "start", "end", "value"],skiprows=1)
     chroms = df_bg["chrom"].unique()
 
     # Create dict to store chromosome plot files
