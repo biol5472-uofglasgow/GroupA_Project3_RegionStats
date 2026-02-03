@@ -131,7 +131,7 @@ def main() -> int:
 
         print(f"Completed. Processed {len(metrics)} intervals.")
 
-    except Exception:
+    except Exception as e:
         logging.exception("Failed writing outputs")
         return 1
 
@@ -148,7 +148,7 @@ def main() -> int:
             )
             logging.info("HTML report generated in report directory")
 
-    except Exception:
+    except Exception as e:
         logging.exception("Report generation failed")
         return 1
 
