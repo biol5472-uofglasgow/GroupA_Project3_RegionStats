@@ -275,7 +275,10 @@ def generate_report(
             ),
             "version": json_data["version"],
             "interval_length": json_data["summary"]["num_intervals"],
-            "timestamp": json_data["timestamp"].replace("T", " ").split(".")[0].replace("+00:00", " UTC"),
+            "timestamp": json_data["timestamp"]
+            .replace("T", " ")
+            .split(".")[0]
+            .replace("+00:00", " UTC"),
         },
         bedgraph=Path(bedgraph_path).name if bedgraph_path else None,
         gc_histogram=gc_plot,
