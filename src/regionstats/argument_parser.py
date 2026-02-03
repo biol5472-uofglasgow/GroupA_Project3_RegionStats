@@ -71,8 +71,15 @@ def build_parser(args_list=None) -> argparse.Namespace:
 
     args = parser.parse_args(args_list)
 
+    #log argument
+    parser.add_argument(
+    "--log",
+    default="regionstats.log",
+    help="Log file path (default: regionstats.log)")
+
     # Logical validation
     if args.bigwig:
         if not args.bedgraph:
             parser.error("--bigwig requires --bedgraph")
     return args
+
