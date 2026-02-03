@@ -4,7 +4,7 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**A fast command-line tool for computing sequence composition metrics across genomic intervals.**
+**A command-line tool for computing sequence composition metrics across genomic intervals.**
 
 RegionStats extracts sequences from specified genomic regions and calculates statistics like GC content, N-fraction, and sequence length. Designed for bioinformatics workflows requiring quality control and compositional analysis of genomic intervals.
 
@@ -20,6 +20,7 @@ RegionStats extracts sequences from specified genomic regions and calculates sta
 - 🐳 **Docker support**: Reproducible containerized execution
 - 📈 **Track outputs**: Generate bedGraph files for genome browsers
 - 📝 **Metadata logging**: JSON run information for reproducibility
+- 📖 **HTML report**: User-friendly output with BedGraph and BigWig support
 
 ---
 
@@ -66,11 +67,18 @@ uv pip install .
 
 - Python ≥ 3.9
 - Dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`
-- Optional: `pyBigWig` (for BigWig output)
+- Optional: `pyBigWig` (for BigWig output) , `pyGenomeTracks`
+Note: pyBigWig not supported on Windows
 
+### Optional dependencies
+
+```bash
+pip install .[pybigwig]
+pip install .[pygenometracks]
+```
 ---
 
-## 🚀 Quick Start
+## 🚀 Execution
 
 ```bash
 # Basic usage
@@ -79,7 +87,10 @@ regionstats \
   --intervals regions.bed \
   --interval-format bed \
   --output-prefix results \
-  --gc-mode include_n
+  --gc-mode include_n \
+  --bedgraph \
+  --bigwig \  #optional (Windows not supported)
+  --report  
 ```
 
 **Docker usage:**
@@ -90,6 +101,9 @@ docker run -v $(pwd):/data regionstats:latest \
   --interval-format bed \
   --output-prefix /data/results \
   --gc-mode include_n
+  --bedgraph \
+  --bigwig \  #optional (windows not supported)
+  --report
 ```
 
 ---
@@ -98,33 +112,33 @@ docker run -v $(pwd):/data regionstats:latest \
 
 ```bash
 regionstats --help
+
+usage: Region Stats [-h] --fasta FASTA --intervals INTERVALS --interval-format {bed,gff3} --output-prefix OUTPUT_PREFIX [--gc-mode {include_n,exclude_n}] [--bedgraph] [--bigwig] [--report]
+
+Computes sequence composition metrics for genomic regions.
+
+options:
+  -h, --help            show this help message and exit
+  --fasta FASTA         Input the path for the Reference genome FASTA file
+  --intervals INTERVALS
+                        Input the Files for supplying the genomic intervals (BED or GFF3)
+  --interval-format {bed,gff3}
+                        Input the Format of the intervals file
+  --output-prefix OUTPUT_PREFIX
+                        Input the Prefix for output files
+  --gc-mode {include_n,exclude_n}
+                        GC calculation modes: 'include_n' counts the Ns in the denominator; 'exclude_n' ignores the Ns in the denominator
+  --bedgraph            Write bedGraph output
+  --bigwig              Generate BigWig output (chrom sizes inferred from FASTA)
+  --report              Generate an HTML report with summary statistics and plots
 ```
-
-### Required Arguments
-
-| Argument | Description |
-|----------|-------------|
-| `--fasta FASTA` | Path to reference genome FASTA file (indexed with `.fai`) |
-| `--intervals INTERVALS` | Path to genomic intervals file (BED or GFF3) |
-| `--interval-format {bed,gff3}` | Format of the intervals file |
-| `--output-prefix PREFIX` | Prefix for output files |
-
-### Optional Arguments
-
-| Argument | Default | Description |
-|----------|---------|-------------|
-| `--gc-mode {include_n,exclude_n}` | `include_n` | GC calculation mode:<br>• `include_n`: GC / total length<br>• `exclude_n`: GC / (total length - N count) |
-| `--bedgraph` | `False` | Generate bedGraph output for genome browsers |
-| `--bigwig` | `False` | Generate BigWig output (**requires --bedgraph**) |
 
 ---
 
 ## 📂 Input Files
 
 ### Reference FASTA (`ref.fasta`)
-- Standard FASTA format with sequence IDs and bases
-- Must be indexed: run `samtools faidx ref.fasta` to generate `ref.fasta.fai`
-- Can contain ambiguous bases (Ns)
+- Standard FASTA format
 
 **Example:**
 ```
@@ -135,7 +149,6 @@ GGCCGGCCGGCCGGCC
 ```
 
 ### BED Format (`intervals.bed`)
-- **0-based, half-open coordinates** `[start, end)`
 - Tab-separated: `chrom  start  end  [name]`
 
 **Example:**
@@ -146,13 +159,10 @@ chr2	0	16	region3
 ```
 
 ### GFF3 Format (`intervals.gff3`)
-- **1-based, closed coordinates** `[start, end]` (automatically converted internally)
-- Processes only features with `type=region`
-- Standard GFF3 columns
+- Standard GFF3 
 
 **Example:**
 ```
-##gff-version 3
 chr1	.	region	1	10	.	+	.	ID=region1
 chr1	.	region	11	19	.	+	.	ID=region2
 ```
@@ -161,7 +171,7 @@ chr1	.	region	11	19	.	+	.	ID=region2
 
 ## 📊 Output Files
 
-### `{prefix}_region_metrics.tsv`
+### `region_metrics.tsv`
 Tab-separated file with one row per interval:
 
 | Column | Description |
@@ -181,7 +191,7 @@ chr1	0	10	region1	10	0.500000	0.000000
 chr1	10	19	region2	9	0.444444	0.333333
 ```
 
-### `{prefix}_run.json`
+### `run.json`
 JSON metadata file containing:
 - Tool version and command
 - Input file paths and parameters
@@ -189,88 +199,23 @@ JSON metadata file containing:
 - Summary statistics (number of intervals processed)
 - Timestamp
 
-### `{prefix}_region_metrics.bedGraph` (optional)
-bedGraph track file for genome browser visualization showing GC content across intervals.
+### `region_metrics.bedGraph` (optional)
+BedGraph track file for genome browser visualization showing GC content across intervals.
 
-### `{prefix}_region_metrics.bigWig` (optional)
+### `region_metrics.bigWig` (optional)
 BigWig binary format for efficient genome browser display.
 
-### HTML Output (Under Development)
-Interactive HTML visualization coming in future release.
+### `report.html`
+User-friendly output with summarised metrics plots and track graphs.
 
----
-
-## 💡 Examples
-
-### Example 1: Basic Analysis
-
-```bash
-regionstats \
-  --fasta genome.fasta \
-  --intervals coding_regions.bed \
-  --interval-format bed \
-  --output-prefix output/coding \
-  --gc-mode include_n
-```
-
-**Output:**
-- `output/coding_region_metrics.tsv`
-- `output/coding_run.json`
-
----
-
-### Example 2: Exclude Ns from GC Calculation
-
-```bash
-regionstats \
-  --fasta draft_genome.fasta \
-  --intervals assembly_gaps.bed \
-  --interval-format bed \
-  --output-prefix gaps_analysis \
-  --gc-mode exclude_n
-```
-
-Useful for draft genomes with many gaps (Ns).
-
----
-
-### Example 3: Generate Genome Browser Tracks
-
-```bash
-regionstats \
-  --fasta reference.fasta \
-  --intervals enhancers.gff3 \
-  --interval-format gff3 \
-  --output-prefix enhancer_gc \
-  --gc-mode include_n \
-  --bedgraph \
-  --bigwig
-```
-
-**Output:**
-- TSV and JSON files
-- `enhancer_gc_region_metrics.bedGraph`
-- `enhancer_gc_region_metrics.bigWig` (for UCSC/IGV)
-
----
-
-### Example 4: Docker with Volume Mounting
-
-```bash
-# All files in current directory
-docker run -v $(pwd):/data regionstats:latest \
-  --fasta /data/ref.fasta \
-  --intervals /data/regions.bed \
-  --interval-format bed \
-  --output-prefix /data/results \
-  --gc-mode include_n
-```
+### `file.log`
+Log file reporting information and error statements.
 
 ---
 
 ## 🧪 Testing
 
-Run the test suite:
+Run the test suite locally:
 
 ```bash
 # Run all tests
@@ -303,7 +248,7 @@ Found a bug or have a feature request? [Open an issue](https://github.com/biol54
 
 ### Development Status
 
-**Version:** 0.1.0  
+**Version:** 1.0.0  
 **Status:** Active Development
 
 This tool was developed as part of BIOL5472 at the University of Glasgow. While functional and tested, it is under active development. Feedback and contributions are welcome!
@@ -329,7 +274,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - University of Glasgow BIOL5472 course
-- Contributors and maintainers of dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`, `pyBigWig`
+- Contributors and maintainers of dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`, `pyBigWig`, `pyGenomeTracks`
 - The Python bioinformatics community
 
 ---
