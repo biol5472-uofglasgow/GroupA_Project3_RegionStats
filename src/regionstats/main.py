@@ -4,20 +4,21 @@ v0.1.0
 still needs print statements and better error handling
 """
 
+import logging
 from pathlib import Path
 from typing import Any, Dict, List
-import logging
 
 from .argument_parser import build_parser
 from .bedgraph_bigwig_output import bedgraph_to_bigwig, write_bedgraph
 from .chrom_sizes import write_chrom_sizes_from_fasta
 from .fetch_sequence import fetch_sequence, open_fasta
 from .interval_handler import load_intervals
+from .logger import setup_logger
 from .output_writer import write_run_json, write_tsv
 from .region_metrics import gc_fraction, n_fraction, sequence_length
 from .report import generate_report
 from .validation import validate_bed, validate_fasta, validate_gff3
-from .logger import setup_logger
+
 
 def main() -> int:
     """
@@ -30,7 +31,7 @@ def main() -> int:
 
     setup_logger(getattr(args, "log", "regionstats.log"))
     logging.info("RegionStats v0.1.0 started")
-    
+
     # Validate inputs
     try:
         logging.info("Validating FASTA")
@@ -85,11 +86,11 @@ def main() -> int:
             }
             metrics.append(region_data)
         logging.info(f"Computed metrics for {len(metrics)} intervals")
-        
+
     except KeyError as e:
         logging.error(f"Sequence not found: {e}")
         return 1
-    except Exception as e:
+    except Exception:
         logging.exception("Metric computation failed")
         return 1
 
@@ -102,7 +103,7 @@ def main() -> int:
         output_dir = Path(args.output_prefix).parent
         if output_dir != Path("."):
             output_dir.mkdir(parents=True, exist_ok=True)
-            
+
         logging.info(f"Writing TSV: {tsv_path}")
         write_tsv(metrics, tsv_path)
         if args.bedgraph:
@@ -131,7 +132,7 @@ def main() -> int:
 
         print(f"Completed. Processed {len(metrics)} intervals.")
 
-    except Exception as e:
+    except Exception:
         logging.exception("Failed writing outputs")
         return 1
 
@@ -148,7 +149,7 @@ def main() -> int:
             )
             logging.info("HTML report generated in report directory")
 
-    except Exception as e:
+    except Exception:
         logging.exception("Report generation failed")
         return 1
 
