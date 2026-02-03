@@ -274,6 +274,8 @@ def generate_report(
                 else "Exclude N"
             ),
             "version": json_data["version"],
+            "interval_length": json_data["summary"]["num_intervals"],
+            "timestamp": json_data["timestamp"],
         },
         bedgraph=Path(bedgraph_path).name if bedgraph_path else None,
         gc_histogram=gc_plot,
