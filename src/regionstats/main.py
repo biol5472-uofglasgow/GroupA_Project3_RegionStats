@@ -6,6 +6,7 @@ still needs print statements and better error handling
 
 from pathlib import Path
 from typing import Any, Dict, List
+import logging
 
 from .argument_parser import build_parser
 from .bedgraph_bigwig_output import bedgraph_to_bigwig, write_bedgraph
@@ -16,7 +17,7 @@ from .output_writer import write_run_json, write_tsv
 from .region_metrics import gc_fraction, n_fraction, sequence_length
 from .report import generate_report
 from .validation import validate_bed, validate_fasta, validate_gff3
-
+from .logging import setup_logger
 
 def main() -> int:
     """
@@ -27,32 +28,40 @@ def main() -> int:
     """
     args = build_parser()
 
-    print("RegionStats v0.1.0")
-
+    setup_logger(getattr(args, "log", "regionstats.log"))
+    logging.info("RegionStats v0.1.0 started")
+    
     # Validate inputs
-    print("Validating inputs...")
     try:
+        logging.info("Validating FASTA")
         validate_fasta(args.fasta)
+
+        logging.info("Validating interval file")
         if args.interval_format == "bed":
             validate_bed(args.intervals)
         elif args.interval_format == "gff3":
             validate_gff3(args.intervals)
 
     except Exception:
+        logging.exception("Input validation failed")
         return 1
 
     # Load FASTA and intervals
     try:
+        logging.info("Opening FASTA")
         fasta = open_fasta(args.fasta)
+        logging.info("Loading intervals")
         intervals = load_intervals(args.intervals, args.interval_format)
 
     except Exception:
+        logging.exception("Failed loading inputs")
         return 1
 
     # Compute metrics
     metrics: List[Dict[str, Any]] = []
 
     try:
+        logging.info("Computing region metrics")
         for row in intervals.df.itertuples():
             seqid = row.Chromosome
             start = int(row.Start)
@@ -75,12 +84,13 @@ def main() -> int:
                 "n_fraction": n_fraction(seq),
             }
             metrics.append(region_data)
-
+        logging.info(f"Computed metrics for {len(metrics)} intervals")
+        
     except KeyError as e:
-        print(f"Sequence not found: {e}")
+        logging.error(f"Sequence not found: {e}")
         return 1
     except Exception as e:
-        print(f"Computation error: {e}")
+        logging.exception("Metric computation failed")
         return 1
 
     # Write outputs
@@ -92,18 +102,23 @@ def main() -> int:
         output_dir = Path(args.output_prefix).parent
         if output_dir != Path("."):
             output_dir.mkdir(parents=True, exist_ok=True)
-
+            
+        logging.info(f"Writing TSV: {tsv_path}")
         write_tsv(metrics, tsv_path)
         if args.bedgraph:
+            logging.info(f"Writing bedGraph: {bedgraph_path}")
             write_bedgraph(metrics, bedgraph_path)
 
         if args.bigwig:
             chrom_sizes_path = f"{args.output_prefix}.chrom.sizes"
+            logging.info("Generating chrom sizes")
             write_chrom_sizes_from_fasta(args.fasta, chrom_sizes_path)
 
-            bigwig_path = f"{args.output_prefix}_region_metrics.bigWig"
+            bigwig_path = f"{args.output_prefix}_region_metrics.bigwig"
+            logging.info("Converting bedGraph to bigwig")
             bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path)
 
+        logging.info(f"Writing run metadata JSON: {json_path}")
         write_run_json(
             fasta_path=args.fasta,
             intervals=args.intervals,
@@ -116,13 +131,14 @@ def main() -> int:
 
         print(f"Completed. Processed {len(metrics)} intervals.")
 
-    except Exception as e:
-        print(f"Error writing outputs: {e}")
+    except Exception:
+        logging.exception("Failed writing outputs")
         return 1
 
     # Generate HTML report if requested in CLI
     try:
         if args.report:
+            logging.info("Generating HTML report")
             generate_report(
                 metrics_tsv=tsv_path,
                 run_json=json_path,
@@ -130,12 +146,13 @@ def main() -> int:
                 bigwig_path=bigwig_path if args.bigwig else None,
                 chrom_sizes_path=chrom_sizes_path if args.bigwig else None,
             )
-            print("HTML report generated in 'report' directory.")
+            logging.info("HTML report generated in report directory")
 
-    except Exception as e:
-        print(f"Error generating report: {e}")
+    except Exception:
+        logging.exception("Report generation failed")
         return 1
 
+    logging.info("RegionStats finished successfully")
     return 0
 
 
