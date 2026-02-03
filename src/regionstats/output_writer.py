@@ -61,7 +61,7 @@ def write_run_json(
 
     metadata = {
         "tool": "regionstats",
-        "version": "0.1.0",
+        "version": "1.0.0",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "inputs": {
             "fasta": str(Path(fasta_path).resolve()),
