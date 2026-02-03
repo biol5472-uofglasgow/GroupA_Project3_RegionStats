@@ -21,6 +21,7 @@ dependencies = [
 
 [project.optional-dependencies]
 bigwig = ["pyBigWig"]
+pygenometracks = ["pyGenomeTracks"]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
