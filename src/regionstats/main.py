@@ -17,7 +17,7 @@ from .output_writer import write_run_json, write_tsv
 from .region_metrics import gc_fraction, n_fraction, sequence_length
 from .report import generate_report
 from .validation import validate_bed, validate_fasta, validate_gff3
-from .logging import setup_logger
+from .logger import setup_logger
 
 def main() -> int:
     """
