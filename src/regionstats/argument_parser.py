@@ -69,17 +69,19 @@ def build_parser(args_list=None) -> argparse.Namespace:
         help="Generate an HTML report with summary statistics and plots",
     )
 
-    args = parser.parse_args(args_list)
-
     #log argument
     parser.add_argument(
-    "--log",
-    default="regionstats.log",
-    help="Log file path (default: regionstats.log)")
+        "--log",
+        default="regionstats.log",
+        help="Log file path (default: regionstats.log)",
+    )        
+    
+    args = parser.parse_args(args_list)
 
     # Logical validation
     if args.bigwig:
         if not args.bedgraph:
             parser.error("--bigwig requires --bedgraph")
     return args
+
 
