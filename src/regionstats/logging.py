@@ -2,10 +2,8 @@ import logging
 from pathlib import Path
 
 def setup_logger(log_path: str):
-    """
-    Configure application-wide logger.
-    """
     log_file = Path(log_path)
+    log_file.parent.mkdir(parents=True, exist_ok=True)
 
     logging.basicConfig(
         level=logging.INFO,
