@@ -3,7 +3,7 @@ from typing import Iterable,Optional,Union
 from pathlib import Path
 
 
-def load_intervals(interval_file : Union[str,Path] , format :str, featuretype : Optional[Union[str,iterable[str]]]={"region"}):
+def load_intervals(interval_file : Union[str,Path] , format :str, featuretype : Optional[Union[str,Iterable[str]]]={"region"}):
     """
     Loads BED or GFF3 intervals using 0-based, half-open notation
     Input: BED/GFF3 file, file format, feature type
