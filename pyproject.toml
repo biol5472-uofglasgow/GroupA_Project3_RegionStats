@@ -16,7 +16,9 @@ dependencies = [
     "pyfaidx",
     "pyranges",
     "pandas",
-    "biopython"
+    "biopython",
+    "matplotlib",
+    "jinja2"
 ]
 
 [project.optional-dependencies]
