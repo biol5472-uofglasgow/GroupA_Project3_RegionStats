@@ -1,9 +1,10 @@
 import logging
 from pathlib import Path
+from typing import Union 
 
 
-def setup_logger(log_path: str):
-    log_file = Path(log_path)
+def setup_logger(log_path: Union[str,Path]) -> None:
+    log_file : Path = Path(log_path)
     log_file.parent.mkdir(parents=True, exist_ok=True)
 
     logging.basicConfig(
