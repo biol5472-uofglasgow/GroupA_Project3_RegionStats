@@ -48,6 +48,7 @@ def generate_n_fraction_histogram(df, outdir):
     """
     Generate a histogram of N fraction per interval.
     """
+    outdir.mkdir(exist_ok=True)
     if len(df) <= 50:
         bins = 10
     elif len(df) <= 200:
