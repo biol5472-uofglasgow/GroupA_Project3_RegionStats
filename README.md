@@ -66,8 +66,9 @@ uv pip install .
 ### Requirements
 
 - Python ≥ 3.9
-- Dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`
+- Dependencies: `pyfaidx`, `pyranges`, `pandas`, `biopython`,`matplotlib`,`jinja2`
 - Optional: `pyBigWig` (for BigWig output) , `pyGenomeTracks`
+  
 Note: pyBigWig not supported on Windows
 
 ### Optional dependencies
