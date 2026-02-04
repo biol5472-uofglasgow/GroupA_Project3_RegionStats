@@ -1,15 +1,22 @@
-import pyranges as pr
-from typing import Iterable,Optional,Union
 from pathlib import Path
+from typing import Iterable, Optional, Union
+
+import pyranges as pr
 
 
-def load_intervals(interval_file : Union[str,Path] , format :str, featuretype : Optional[Union[str,Iterable[str]]]={"region"}):
+def load_intervals(
+    interval_file: Union[str, Path],
+    format: str,
+    featuretype: Optional[Union[str, Iterable[str]]] = {"region"},
+):
     """
     Loads BED or GFF3 intervals using 0-based, half-open notation
     Input: BED/GFF3 file, file format, feature type
     """
-    format : str = format.lower()  # Ensure format is in lowercase
-    interval_file : Union[str,Path] = str(interval_file)  # Convert Path object to string
+    format: str = format.lower()  # Ensure format is in lowercase
+    interval_file: Union[str, Path] = str(
+        interval_file
+    )  # Convert Path object to string
 
     if format == "bed":
         return pr.read_bed(interval_file)  # If file is in .bed format
