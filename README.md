@@ -26,7 +26,7 @@ RegionStats extracts sequences from specified genomic regions and calculates sta
 
 ## 🔧 Installation
 
-### Option 1: pip
+### Option 1: pip 
 
 ```bash
 pip install git+https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionStats.git
@@ -35,6 +35,20 @@ pip install git+https://github.com/biol5472-uofglasgow/GroupA_Project3_RegionSta
 *Note: PyPI package will be available in a future release.*
 
 ### Option 2: Docker 
+
+**Pull from GitHub Container Registry (recommended):**
+```bash
+# Pull the image
+docker pull ghcr.io/biol5472-uofglasgow/groupa_project3_regionstats:latest
+
+# Run with your data
+docker run -v $(pwd):/data ghcr.io/biol5472-uofglasgow/groupa_project3_regionstats:latest \
+  --fasta /data/reference.fasta \
+  --intervals /data/regions.bed \
+  --interval-format bed \
+  --output-prefix /data/results \
+  --gc-mode include_n
+```
 
 ```bash
 # Build locally
