@@ -1,7 +1,7 @@
 from pyfaidx import Fasta
 
 
-def write_chrom_sizes_from_fasta(fasta_path, output_path):
+def write_chrom_sizes_from_fasta(fasta_path, output_path) -> None:
     """
     Generate chromosome sizes file from FASTA file path.
     """
