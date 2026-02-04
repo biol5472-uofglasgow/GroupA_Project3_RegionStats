@@ -1,7 +1,7 @@
 from pyfaidx import Fasta
 
 
-def open_fasta(fasta_file):
+def open_fasta(fasta_file str) -> Fasta:
     """
     Open FASTA file for random access using pyfaidx module
     :param fasta_file: FASTA file with sequences
@@ -9,7 +9,7 @@ def open_fasta(fasta_file):
     return Fasta(fasta_file, as_raw=True, sequence_always_upper=True)
 
 
-def fetch_sequence(fasta_var, seqid, start, end):
+def fetch_sequence(fasta_var: Fasta, seqid: str, start: int, end: int) -> str:
     """
     Function to extract sequence data from a FASTA file with specified coordinates
 
