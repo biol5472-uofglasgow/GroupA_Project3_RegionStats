@@ -205,7 +205,7 @@ def generate_bigwig_tracks(bigwig_path, chrom_sizes_path, outdir):
 
 
 def generate_report(
-    metrics_tsv, run_json, bedgraph_path=None, bigwig_path=None, chrom_sizes_path=None
+    metrics_tsv, run_json, bedgraph_path=None, bigwig_path=None, chrom_sizes_path=None,output_dir=None,
 ):
     """
     Generate HTML report summarising generated outputs and metrics. Includes:
@@ -219,11 +219,18 @@ def generate_report(
     - Config files for pyGenomeTracks if --bigwig provided
 
     """
+    
+    if output_dir is None:
+        output_dir = Path(".")
+    else:
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
     # Convert paths to Path objects
     metrics_tsv = Path(metrics_tsv)
     run_json = Path(run_json)
-    report_dir = Path("report")  # Output "report" directory
-    report_dir.mkdir(exist_ok=True)
+    report_dir = Path(output_dir) / "report"  # Output "report" directory
+    report_dir.mkdir(parents=True, exist_ok=True)
 
     # Read metrics TSV and run json files
     df = pd.read_csv(metrics_tsv, sep="\t")
