@@ -4,6 +4,9 @@ import os
 import subprocess
 import pandas as pd
 import pytest
+from jinja2 import Environment, FileSystemLoader
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 from regionstats.report import generate_gc_histogram, generate_n_fraction_histogram, generate_bedgraph_chrom_plots, generate_bigwig_tracks, generate_report
 
 #Create test fixtures for metrics dataframe and file paths
