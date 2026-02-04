@@ -9,5 +9,5 @@ def write_chrom_sizes_from_fasta(fasta_path, output_path) -> None:
 
     with open(output_path, "w") as out:
         for chrom in fasta.keys():
-            size = len(fasta[chrom])
+            size :int = len(fasta[chrom])
             out.write(f"{chrom}\t{size}\n")
