@@ -142,7 +142,6 @@ def main() -> int:
         logging.exception("Failed writing outputs")
         return 1
 
-
     # Generate HTML report if requested in CLI
     try:
         if args.report:
