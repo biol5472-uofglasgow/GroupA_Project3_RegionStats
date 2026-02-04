@@ -1,6 +1,6 @@
 """
 Main pipeline for computing region statistics.
-v0.1.0
+v1.0.0
 still needs print statements and better error handling
 """
 
@@ -29,8 +29,15 @@ def main() -> int:
     """
     args = build_parser()
 
-    setup_logger(getattr(args, "log", "regionstats.log"))
-    logging.info("RegionStats v0.1.0 started")
+    # Create output directory
+    output_dir = Path("output_dir")
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Log file goes into output_dir
+    log_path = output_dir / getattr(args, "log", "regionstats.log")
+    setup_logger(log_path)
+
+    logging.info("RegionStats v1.0.0 started")
 
     # Validate inputs
     try:
@@ -96,26 +103,25 @@ def main() -> int:
 
     # Write outputs
     try:
-        tsv_path = f"{args.output_prefix}_region_metrics.tsv"
-        json_path = f"{args.output_prefix}_run.json"
-        bedgraph_path = f"{args.output_prefix}_region_metrics.bedGraph"
+        prefix = Path(args.output_prefix).name
 
-        output_dir = Path(args.output_prefix).parent
-        if output_dir != Path("."):
-            output_dir.mkdir(parents=True, exist_ok=True)
+        tsv_path = output_dir / f"{prefix}_region_metrics.tsv"
+        json_path = output_dir / f"{prefix}_run.json"
+        bedgraph_path = output_dir / f"{prefix}_region_metrics.bedGraph"
 
         logging.info(f"Writing TSV: {tsv_path}")
         write_tsv(metrics, tsv_path)
+
         if args.bedgraph:
             logging.info(f"Writing bedGraph: {bedgraph_path}")
             write_bedgraph(metrics, bedgraph_path)
 
         if args.bigwig:
-            chrom_sizes_path = f"{args.output_prefix}.chrom.sizes"
+            chrom_sizes_path = output_dir / f"{prefix}.chrom.sizes"
             logging.info("Generating chrom sizes")
             write_chrom_sizes_from_fasta(args.fasta, chrom_sizes_path)
 
-            bigwig_path = f"{args.output_prefix}_region_metrics.bigwig"
+            bigwig_path = output_dir / f"{prefix}_region_metrics.bigwig"
             logging.info("Converting bedGraph to bigwig")
             bedgraph_to_bigwig(bedgraph_path, chrom_sizes_path, bigwig_path)
 
@@ -136,6 +142,7 @@ def main() -> int:
         logging.exception("Failed writing outputs")
         return 1
 
+
     # Generate HTML report if requested in CLI
     try:
         if args.report:
@@ -146,6 +153,7 @@ def main() -> int:
                 bedgraph_path=bedgraph_path if args.bedgraph else None,
                 bigwig_path=bigwig_path if args.bigwig else None,
                 chrom_sizes_path=chrom_sizes_path if args.bigwig else None,
+                output_dir=output_dir,
             )
             logging.info("HTML report generated in report directory")
 
