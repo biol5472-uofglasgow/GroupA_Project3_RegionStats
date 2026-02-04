@@ -1,7 +1,7 @@
 from pyfaidx import Fasta
 
 
-def open_fasta(fasta_file str) -> Fasta:
+def open_fasta(fasta_file: str) -> Fasta:
     """
     Open FASTA file for random access using pyfaidx module
     :param fasta_file: FASTA file with sequences
